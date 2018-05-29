@@ -34,7 +34,7 @@ export default {
       ...context2(key),
       _path: `${key.replace('.md', '').replace('./', '')}`
     }));
-console.log(posts,'poststts')
+
 
     return{
       animal,

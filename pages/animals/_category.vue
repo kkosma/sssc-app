@@ -53,7 +53,7 @@
 let animal
 let category
 let router
-const path = require('path')
+
 export default {
   
   validate({ params }) {

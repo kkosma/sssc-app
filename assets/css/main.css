@@ -348,6 +348,7 @@ p{
 .home-heading h1{
   line-height: 1;
   font-size:4rem;
+  text-shadow:2px 2px 10px rgba(0,0,0,.5)
 }
 .vignette{
   position: fixed;

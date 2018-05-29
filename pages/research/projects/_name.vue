@@ -46,7 +46,7 @@ export default {
   
     const project =  require('~/content/research/'+ params.name + '.md');
     
-  console.log('projectt',project)
+
     return{
       project,
   

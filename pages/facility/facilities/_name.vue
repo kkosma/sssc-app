@@ -47,7 +47,7 @@ export default {
   
     const project =  require('~/content/facility/'+ params.name + '.md');
     
-  console.log('projectt',project)
+
     return{
       project,
   

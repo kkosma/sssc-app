@@ -13,7 +13,7 @@
     </div>
     
     <div class="overlay"></div>
-    <div class="heading home-heading"><h1 v-html="settings.__content"></h1></div>
+    <div class="heading home-heading" v-html="settings.__content"></div>
     <div class="nav-con"> 
  
    
@@ -22,7 +22,7 @@
         
         <ul>
           <li @click="disabled ? '' : routeLink(page.link,value)" :id="value" v-for="(page,value) in pages" :to="page.link || value.toLowerCase()" :event="disabled ? '' : 'click'" v-bind:class="{ selected: selected == value}">
-           <a  >
+           <a >
             <img :src="page.img" class="img-fluid obj-fit-cover obj-pos-c">
             <div class="animal-name" >
               
@@ -43,16 +43,10 @@
 
 <script>
 let homeSlidePos=0
+let environment
 //const ImagePreloader = require('image-preloader')
 if (process.browser) {
-  var DEBUG = true;
-  if(!DEBUG){
-    if(!window.console) window.console = {};
-    var methods = ['log', 'debug', 'warn', 'info'];
-    for(var i=0;i<methods.length;i++){
-      console[methods[i]] = function(){};
-    };
-  };
+  
 
 }
   import animallayout from '../components/animal-layout.vue'
@@ -72,8 +66,16 @@ if (process.browser) {
       }
     },
     mounted(){
-      console.log(this,'thissss')
        document.getElementById('homevid').play()
+      var DEBUG = true;
+      this.environment == 'production' ? DEBUG = false : null
+      if(!DEBUG){
+        if(!window.console) window.console = {};
+        var methods = ['log', 'debug', 'warn', 'info'];
+        for(var i=0;i<methods.length;i++){
+          console[methods[i]] = function(){};
+        };
+      };
 /*
       const context2 = require.context('~/static/images', true, /\.jpg$/);
      // console.log(context2.keys(),'imagess')
@@ -155,7 +157,7 @@ if (process.browser) {
 
     },
     asyncData (context) {
-      console.log(context.env,'env')
+      //console.log(context.env,'env')
      
     return { 
         selected:'',

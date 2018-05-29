@@ -82,11 +82,11 @@ export default {
   },
   props: ['yearsMD'],
   validate({ params }) {
-    console.log(params,'paramsssees',this.props)
+    //console.log(params,'paramsssees',this.props)
     return (params.year)
   },
   asyncData( context) {
-     console.log(context.params.year,'paramsideee')
+     //console.log(context.params.year,'paramsideee')
     //const project = env.projects.find((project) => String(project.name) === params.name)
    // console.log(project,'projects')
   
@@ -112,7 +112,7 @@ export default {
       var scope =this
       object.forEach(function(keye,index) {
         var newObject=keye
-        console.log(scope.get(keye,['year']),'balue')
+      //  console.log(scope.get(keye,['year']),'balue')
       //console.log(Object.keys(newObject),'balue',value,keye)
       result =  Object.keys(keye).find(key => keye[key] === value);
      

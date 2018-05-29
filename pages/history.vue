@@ -63,13 +63,13 @@ export default {
 	console.log('timelines')
 	//	timeline()
 	//	console.log(this,this.currentRoute.name,'conteeeee')
-	console.log(this,'contect')
+	//console.log(this,'contect')
 		var currentRoute = this.currentRoute
 		//var yearPages = this.yearPages
 		var prevBtn = document.getElementById("prevBtn");
 		var nextBtn = document.getElementById("nextBtn");
 		function navLinks2(link,currentRoute){
-			console.log(link,'ink',currentRoute)
+			//console.log(link,'ink',currentRoute)
 		
 			
 				if (currentRoute == 'history'){
@@ -107,10 +107,10 @@ export default {
 			_path: `${key.replace('.md', '').replace('./', '')}`
 		
 		}));
-			console.log( yearsMD.map(a => a.year).sort(),'years')
+		//	console.log( yearsMD.map(a => a.year).sort(),'years')
 			var sortedYears={}
 			yearsMD.forEach(function(key,index){sortedYears[yearsMD[index].year]=yearsMD[index]})
-			console.log(sortedYears,'soretd')
+		//	console.log(sortedYears,'soretd')
 		return {
 			transitionContainer:'',
 			transitionName:'d',
@@ -143,9 +143,9 @@ export default {
 		},
 		updateTimeline:function(year){
 				 setTimeout((parent) => {
-			console.log('yeard',year)
+			//console.log('yeard',year)
 			year = this.$route.path.split("/").pop();
-			console.log('yeard',year,currentRoute)
+		//	console.log('yeard',year,currentRoute)
 			if (year == 'history'){
 					var parent = document.querySelector('[data-year="' + yearPages[0] + '"]')
 					console.log(parent,'parent')
@@ -163,7 +163,7 @@ export default {
 			
 							// parent.classList.add('older-event')
 					
-				console.log( 'parettttttttt',parent,year)
+			//	console.log( 'parettttttttt',parent,year)
 			//	var active = element.querySelector('.active');
 				var prev = parent.previousElementSibling;
 				var next = parent.nextElementSibling;
@@ -193,7 +193,7 @@ export default {
 			if (event.target.tagName==  "A"){
 			//	event.target.classLists.add('yearSelected')
 				//yearSelected= event.target.getAttribute('data-year')
-				console.log('yearsssssssssssss',event.target)
+				//console.log('yearsssssssssssss',event.target)
 				//event.target.classList.add('selected')
 				
 				if (	document.getElementsByClassName('yearSelected')[0]){
@@ -232,9 +232,9 @@ export default {
 			
 		},
 		navLinks: function(link,currentRoute){
-			console.log(link,'ink',currentRoute,this.$route)
+		//	console.log(link,'ink',currentRoute,this.$route)
 			currentRoute = this.$route.path.split("/").pop();
-			console.log(currentRoute,'cur')
+			//console.log(currentRoute,'cur')
 			if (link == 'prev'){
 				if (currentRoute == 'history'){
 					return ''
@@ -250,14 +250,14 @@ export default {
 
 			}
 			if (link == 'next'){
-				console.log(currentRoute, yearPages,'pagesss')
+				//console.log(currentRoute, yearPages,'pagesss')
 				if (currentRoute == 'history'){
 				//	console.log('fuckhistory')
 				return currentRoute+'/1910'
 				}
 				if (yearPages[yearPages.indexOf(currentRoute)+1] != undefined){
 					var next=yearPages[yearPages.indexOf(currentRoute)+1]
-					console.log(next,'neeeeeeeeeeeeeee')
+					//console.log(next,'neeeeeeeeeeeeeee')
 					return next
 				}else{
 					return ''
@@ -300,7 +300,7 @@ export default {
 		},
 		leave: function(el){
 			var destination = this.$route.name
-			console.log('to','from',destination)
+		//	console.log('to','from',destination)
 			var hero = document.getElementById("heroimage");
       var heading= document.getElementsByClassName("heading")[0];
 			var container= document.getElementsByClassName("content")[0];

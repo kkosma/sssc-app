@@ -66,7 +66,7 @@ export default {
 		var prevBtn = document.getElementById("prevBtn");
 		var nextBtn = document.getElementById("nextBtn");
 		function navLinks2(link,currentRoute){
-			console.log(link,'ink',currentRoute)
+		//	console.log(link,'ink',currentRoute)
 		
 			
 				if (currentRoute == 'history'){
@@ -97,7 +97,7 @@ export default {
 
 	},
 	asyncData(context) {
-			console.log(context.route,'contect')
+		//	console.log(context.route,'contect')
 		return {
 			transitionContainer:'',
 			transitionName:'d',
@@ -159,7 +159,7 @@ export default {
 
 			}
 			if (link == 'next'){
-				console.log(currentRoute, yearPages,'pagesss')
+				//console.log(currentRoute, yearPages,'pagesss')
 				if (currentRoute == 'history'){
 				//	console.log('fuckhistory')
 				return currentRoute+'/1910'

@@ -97,7 +97,7 @@ export default {
 
 	},
 	asyncData(context) {
-			console.log(context.route,'contect')
+		//	console.log(context.route,'contect')
 		return {
 			transitionContainer:'',
 			transitionName:'d',

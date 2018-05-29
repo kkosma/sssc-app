@@ -35,7 +35,7 @@ export default {
       ...context2(key),
       _path: `${key.replace('.md', '').replace('./', '')}`
     }));
-console.log(posts,'poststts')
+
 
     return{
       animal,
@@ -57,7 +57,7 @@ console.log(posts,'poststts')
     }
   },
    created: function() {
-    this.$parent.$on('routeBack', console.log('backkkkkkk'));
+    //this.$parent.$on('routeBack', console.log('backkkkkkk'));
   }, 
   mounted() {
         var onUp=function(){

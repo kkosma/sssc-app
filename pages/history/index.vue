@@ -33,7 +33,7 @@ export default {
 		var prevBtn = document.getElementById("prevBtn");
 		var nextBtn = document.getElementById("nextBtn");
 		function navLinks2(link,currentRoute){
-			console.log(link,'ink',currentRoute)
+		//	console.log(link,'ink',currentRoute)
 		
 			
 				if (currentRoute == 'history'){
@@ -64,7 +64,7 @@ export default {
 
 	},
 	asyncData(context) {
-			console.log(context.route,'contect')
+		//	console.log(context.route,'contect')
 			var index = require('~/content/history.md');
 		return {
 			transitionContainer:'',
