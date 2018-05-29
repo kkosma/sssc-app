@@ -1,0 +1,6 @@
+---
+title: Sitka GeoTask Force
+image: /images/uploads/geotask.jpg
+---
+
+On August 18, 2015, a rapid, heavy rain event caused a series of deadly and damaging landslides in Sitka. There were over 40 slides that occurred on Baranof and Chichagof Islands that day. The biggest one, on Harbor Mountain, was 1,200 feet long, killed three men and caused massive damage to property on Kramer Avenue. Over the next days, weeks and months, the community of Sitka led by our Sitka Fire Department came together to support the search for the lost men, clear the roads and repair the damage to property. With this emergency, a new science community was also created. The Sitka GeoTask Force was formed by gathering geophysical experts from around Alaska and the country to pool existing information about the slide area, share information and help determine next steps in terms of research, synthesis and risk. Organized by the Sitka Sound Science Center, representatives with a breadth of knowledge about the region volunteered to share existing geotechnical information and work towards understanding what gaps in knowledge need to be filled. Members of the Sitka Geo Task Force readily and openly shared their scientific expertise all in the name of supporting a community in need.

@@ -1,0 +1,37 @@
+{
+  "_from": "three-matcap-material",
+  "_id": "three-matcap-material@1.0.0",
+  "_inBundle": false,
+  "_integrity": "sha1-UvwAT6Ut/LaA7SPEw+x0eHTilJk=",
+  "_location": "/three-matcap-material",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "three-matcap-material",
+    "name": "three-matcap-material",
+    "escapedName": "three-matcap-material",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/three-matcap-material/-/three-matcap-material-1.0.0.tgz",
+  "_shasum": "52fc004fa52dfcb680ed23c4c3ec747874e29499",
+  "_spec": "three-matcap-material",
+  "_where": "/Users/kylekosma/Documents/WebDesign/SSSC_App/app_C/my-project",
+  "author": "",
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "This is just a package of @spite's excellent Spherical Environment Mapping code, to give your models a nicer lighting.",
+  "license": "ISC",
+  "main": "index.js",
+  "name": "three-matcap-material",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.0.0"
+}

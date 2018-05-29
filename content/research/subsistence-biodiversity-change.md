@@ -1,0 +1,6 @@
+---
+title: Subsistence, Biodiversity & Change
+image: /images/uploads/subsistence.jpg
+---
+
+In Sitka Sound, the biodiversity and function of subtidal rocky reefs has fluctuated significantly over the last century, and continues to do so under more recent stressors such as sea star wasting and warming temperatures. However, a lack of ongoing subtidal community monitoring in this region has set up the potential that certain changes, evident to attentive resource users in the area, might be overlooked during future characterizations of these systems. This concern motivated a composite project to both formally document local resource users’ perception of historic change in Sitka Sound’s nearshore systems as well as capture current seasonal dynamics in rocky reef communities via year-long monitoring of permanent sites. The diverse data resulting from this project will provide essential supporting information that can be used to anticipate and account for the broader impacts of future disturbance events in this ecosystem. Funding for this project comes from the Charlotte Martin Foundation, with SSSC Research Biologist Lauren Bell as lead investigator.

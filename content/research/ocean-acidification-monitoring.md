@@ -1,0 +1,6 @@
+---
+title: Ocean Acidification Monitoring in Sitka Sound
+image: /images/uploads/ocean-acidification.jpg
+---
+
+SSSC partners with a number of researchers and organizations to monitor the carbonate chemistry of Sitka Sound and investigate local vulnerabilities and resilience to the impacts of ocean acidification (OA). SSSC researchers help to maintain continuous water monitoring instrumentation deployed at 30 ft in Sitka Sound for University of California Santa Cruz researcher Kristy Kroeker, who studies global change ecology in kelp forest ecosystems. The U.S. Coast Guard Academy has also deployed a harbor buoy to monitor pH, dissolved oxygen, temperature and salinity in near-surface waters; USCGA cadet interns use this instrumentation in their summer research and SSSC hatchery staff utilize the water quality information and maintain instrument calibration year-round. The Sitka Tribe of Alaska, an SSSC partner, is currently launching a high-quality ocean acidification monitoring program within their environmental sciences department that will help to fill an important data need in our region and also facilitate future OA research in the Sitka area. SSSC is a member of the Alaska Ocean Acidification Network.

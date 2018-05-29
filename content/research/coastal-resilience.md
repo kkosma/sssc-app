@@ -1,0 +1,6 @@
+---
+title: Coastal Resilience in Sitka Sound
+image: /images/uploads/coastal-resilience.jpg
+---
+
+Through a collaborative project between SSSC, Alaska Department of Fish and Game (ADF&G), University of Alaska Southeast (UAS), and the US Coast Guard Academy (USCGA), USCGA Cadet interns will map, assess, monitor Sitka Sound kelp beds and evaluate changing environmental conditions such as pH, temperature, and currents in Sitka Sound. Concurrently, scientists will collect density and demographic data on the Pinto abalone in Sitka Sound. Kelp beds and Pinto abalone are important species in the coastal ecosystem of Sitka Sound. Monitoring these populations and correlating trends with factors related to climate change will help inform management decisions and help our community respond to a changing environment. Further, this study will be a conduit for training and mentoring a new generation of scientists and managers through internship programs at the Science Center. 2015-2016 research is funded by Alaska Seagrant, with SSSC Research Director Victoria O’Connell as lead. Our partners are the USCG Academy (Vlietstra), ADF&G (Hebert), UAS (Pearson). Taylor White and Lauren Bell lead researchers.
