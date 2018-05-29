@@ -20,6 +20,7 @@ collections:
           - {label: Title, name: title, widget: string}
           - {label: Heading, name: heading, widget: string}
           - {label: "Body", name: "body", widget: "markdown"}
+          - {label: "Image", name: "image", widget: "image", required: true}
       - label: "Research"
         name: "research"
         file: "content/research.md"
@@ -28,6 +29,7 @@ collections:
           - {label: Title, name: title, widget: string}
           - {label: Heading, name: heading, widget: string}
           - {label: "Body", name: "body", widget: "markdown"}
+          - {label: "Image", name: "image", widget: "image", required: true}
       - label: "Facilities"
         name: "facility"
         file: "content/facility.md"
@@ -36,6 +38,7 @@ collections:
           - {label: Title, name: title, widget: string}
           - {label: Heading, name: heading, widget: string}
           - {label: "Body", name: "body", widget: "markdown"}
+          - {label: "Image", name: "image", widget: "image", required: true}
       - label: "History"
         name: "history"
         file: "content/history.md"
@@ -44,6 +47,7 @@ collections:
           - {label: Title, name: title, widget: string}
           - {label: Heading, name: heading, widget: string}
           - {label: "Body", name: "body", widget: "markdown"}
+          - {label: "Image", name: "image", widget: "image", required: true}
       - label: "Animals"
         name: "animals"
         file: "content/animals.md"
@@ -52,6 +56,7 @@ collections:
           - {label: Title, name: title, widget: string}
           - {label: Heading, name: heading, widget: string}
           - {label: "Body", name: "body", widget: "markdown"}
+          - {label: "Image", name: "image", widget: "image", required: true}
 
   - label: "App Settings"
     name: "appsettings"
@@ -129,10 +134,12 @@ collections:
     extension: 'md'
     fields: # The fields for each document, usually in front matter
       - {label: "Title", name: "title", widget: "string"}
-      - {label: "Featured Image", name: "thumbnail", widget: "image", required: false}
+      - {label: "Featured Image", name: "image", widget: "image", required: true}
+      - {label: "Attribution", name: "attribution", widget: "string"}
       - {label: "Body", name: "body", widget: "markdown"}
       - label: "Gallery Images" 
         name: "galleryImages"
+        required: false
         widget: "list"
         fields:
           - {label: Image, name: image, widget: image}
@@ -145,7 +152,8 @@ collections:
     extension: 'md'
     fields: # The fields for each document, usually in front matter
       - {label: "Title", name: "title", widget: "string"}
-      - {label: "Featured Image", name: "thumbnail", widget: "image", required: false}
+      - {label: "Featured Image", name: "image", widget: "image", required: true}
+      - {label: "Attribution", name: "attribution", widget: "string"}
       - {label: "Body", name: "body", widget: "markdown"}
 
   - name: "facility" # Used in routes, e.g., /admin/collections/blog
@@ -156,7 +164,8 @@ collections:
     extension: 'md'
     fields: # The fields for each document, usually in front matter
       - {label: "Title", name: "title", widget: "string"}
-      - {label: "Featured Image", name: "thumbnail", widget: "image", required: false}
+      - {label: "Featured Image", name: "image", widget: "image", required: true}
+      - {label: "Attribution", name: "attribution", widget: "string"}
       - {label: "Body", name: "body", widget: "markdown"}
 
   - name: "birds" # Used in routes, e.g., /admin/collections/blog
@@ -170,6 +179,7 @@ collections:
     filter: {field: "category", value: "birds"}
     fields: # The fields for each document, usually in front matter
       - {label: "Image", name: "image", widget: "image", required: true}
+      - {label: "Attribution", name: "attribution", widget: "string"}
       - {label: "Name", name: "title", widget: "string"}
       - {label: "Scientific Name", name: "scientific", widget: "string"}
       - {label: "Distribution", name: "distribution", widget: "string"}
@@ -189,6 +199,7 @@ collections:
     filter: {field: "category", value: "invertebrates"}
     fields: # The fields for each document, usually in front matter
       - {label: "Image", name: "image", widget: "image", required: true}
+      - {label: "Attribution", name: "attribution", widget: "string"}
       - {label: "Name", name: "title", widget: "string"}
       - {label: "Scientific Name", name: "scientific", widget: "string"}
       - {label: "Distribution", name: "distribution", widget: "string"}
@@ -207,6 +218,7 @@ collections:
       preview: false
     fields: # The fields for each document, usually in front matter
       - {label: "Image", name: "image", widget: "image", required: true}
+      - {label: "Attribution", name: "attribution", widget: "string"}
       - {label: "Name", name: "title", widget: "string"}
       - {label: "Scientific Name", name: "scientific", widget: "string"}
       - {label: "Distribution", name: "distribution", widget: "string"}
@@ -225,6 +237,7 @@ collections:
       preview: false
     fields: # The fields for each document, usually in front matter
       - {label: "Image", name: "image", widget: "image", required: true}
+      - {label: "Attribution", name: "attribution", widget: "string"}
       - {label: "Name", name: "title", widget: "string"}
       - {label: "Scientific Name", name: "scientific", widget: "string"}
       - {label: "Distribution", name: "distribution", widget: "string"}
@@ -243,6 +256,7 @@ collections:
       preview: false
     fields: # The fields for each document, usually in front matter
       - {label: "Image", name: "image", widget: "image", required: true}
+      - {label: "Attribution", name: "attribution", widget: "string"}
       - {label: "Name", name: "title", widget: "string"}
       - {label: "Scientific Name", name: "scientific", widget: "string"}
       - {label: "Distribution", name: "distribution", widget: "string"}

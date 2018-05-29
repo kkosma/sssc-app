@@ -9,7 +9,7 @@
     <div class="video" >
        <div class="vignette"></div>
        <div class="bottom-vignette"></div>
-      <video id="homevid" autoplay loop><source :src="environment == 'production' ? 'https://drive.google.com/uc?export=null&id=1tRnGd9OpHrWCA4feOSBFcJaJBUkMwPVU' : '/video/Background_Video.mp4'" type="video/mp4" ></video>
+      <video id="homevid" autoplay loop><source :src="buildEnv == 'netlify' ? 'https://drive.google.com/uc?export=null&id=1tRnGd9OpHrWCA4feOSBFcJaJBUkMwPVU' : '/video/Background_Video.mp4'" type="video/mp4" ></video>
     </div>
     
     <div class="overlay"></div>
@@ -44,6 +44,7 @@
 <script>
 let homeSlidePos=0
 let environment
+let buildEnv
 //const ImagePreloader = require('image-preloader')
 if (process.browser) {
   
@@ -163,6 +164,7 @@ if (process.browser) {
         selected:'',
         disabled: true,
         environment:context.env.environment,
+        buildEnv:context.env.buildEnv,
         current: context.route.name,
         homeSlidePos:0,
         settings: require('~/content/settings.md'),

@@ -13,7 +13,7 @@
   },
   "build": {
     "asar": false,
-    "appId": "",
+    "appId": "com.electron.sssc-app",
     "directories": {},
     "mac": {
       "identity": null
@@ -23,19 +23,18 @@
     },
     "nsis": {
       "perMachine": true,
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true
+      "oneClick": false
     }
   },
   "scripts": {
     "dev": "NODE_ENV=NDEV nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
-    "generate": "NODE_ENV=production nuxt generate",
+    "generate": "NODE_ENV=production BUILD_ENV=netlify nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "npm run lint",
     "e-dev": "cross-env NODE_ENV=DEV electron .",
-    "e-build": "nuxt build && electron-builder -m"
+    "e-build": "BUILD_ENV=electron nuxt build && electron-builder -w"
   },
   "dependencies": {
     "leaflet": "^1.3.1",

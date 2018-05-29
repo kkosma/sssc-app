@@ -53,7 +53,7 @@ module.exports = {
        // console.log('client')
      // config.resolveLoader.alias={}
       //config.resolveLoader.alias['my-loader'] = path.join(__dirname, '/middleware/myloader.js')
-      
+  
       config.module.rules.push({
         test: /\.md/,
         loader: 'markdown-with-front-matter-loader',
@@ -101,5 +101,6 @@ module.exports = {
   ],
   env: {
     environment: process.env.NODE_ENV,
+    buildEnv: process.env.BUILD_ENV || 'undefined',
   },
 }

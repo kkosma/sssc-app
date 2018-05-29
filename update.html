@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ 
+</head>
+
+<body>
+ <h1 id="loader">Loading...</h1>
+ <h2 id="progressText"></h2>
+ <a href="" id="home"></a>
+  <script>
+  const { ipcRenderer } = require('electron');
+  var progressText=document.getElementById('progressText')
+  var home = document.getElementById('home')
+  ipcRenderer.on('loading', (event, data) => {
+    console.log(data,'data'); // prints 'do something for me'
+    progressText.innerHTML=Math.floor(data.progress)
+  });
+  ipcRenderer.on('doneLoading', (event, data) => {
+    console.log(data, 'data'); // prints 'do something for me'
+    progressText.innerHTML = "Finished Loading"
+  });
+  ipcRenderer.on('cleaningFiles', (event, data) => {
+      console.log(data, 'data'); // prints 'do something for me'
+      progressText.innerHTML = "Cleaning up.."
+  });
+  ipcRenderer.on('rebuilding', (event, data) => {
+    console.log(data, 'data'); // prints 'do something for me'
+    progressText.innerHTML = "Building App.."
+  });
+  ipcRenderer.on('restarting', (event, data) => {
+      console.log(data, 'data'); // prints 'do something for me'
+      progressText.innerHTML = "Restarting App.."
+  });
+  ipcRenderer.on('reloadNuxt', (event, data) => {
+      console.log(data, 'data'); // prints 'do something for me'
+      progressText.innerHTML = "Reload Main app"+data
+      home.innerHTML='home'
+      home.href=data
+
+    });
+  </script>
+</body>
+
+</html>

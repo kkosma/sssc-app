@@ -13,3 +13,6 @@ dist-static
 
 # Mac OS
 .DS_Store
+
+# NSIS Windows target set install location
+!build/installer.nsh
