@@ -51,9 +51,7 @@
 if (process.browser) {
 
 }
-let yearPages=[
-	'1910','1929','1972','2001','2005','2007','2010-2014','Present'
-]
+
 let currentRoute
 let context1
 let transitionName
@@ -110,7 +108,7 @@ export default {
 		//	console.log( yearsMD.map(a => a.year).sort(),'years')
 			var sortedYears={}
 			yearsMD.forEach(function(key,index){sortedYears[yearsMD[index].year]=yearsMD[index]})
-		//	console.log(sortedYears,'soretd')
+			console.log(sortedYears,Object.keys(sortedYears),'YEARS')
 		return {
 			transitionContainer:'',
 			transitionName:'d',
@@ -119,7 +117,7 @@ export default {
 			n:0,
 			years:yearsMD.map(a => a.yearsMD).sort(),
 			yearsMD:sortedYears,
-			yearPages:yearPages,
+			yearPages:Object.keys(sortedYears).sort(),
 			//currentRoute: (context.route.name).split('-').pop(),
 			currentRoute: (context.route.name).replace('history-',''),
 			//context1:this.$route
@@ -147,7 +145,7 @@ export default {
 			year = this.$route.path.split("/").pop();
 		//	console.log('yeard',year,currentRoute)
 			if (year == 'history'){
-					var parent = document.querySelector('[data-year="' + yearPages[0] + '"]')
+					var parent = document.querySelector('[data-year="' + this.yearPages[0] + '"]')
 					console.log(parent,'parent')
 						parent.classList.add('yearSelected')
 			}else{
@@ -239,8 +237,8 @@ export default {
 				if (currentRoute == 'history'){
 					return ''
 				}
-				if (yearPages[yearPages.indexOf(currentRoute)-1] != undefined){
-					var pre=yearPages[yearPages.indexOf(currentRoute)-1]
+				if (this.yearPages[this.yearPages.indexOf(currentRoute)-1] != undefined){
+					var pre=this.yearPages[this.yearPages.indexOf(currentRoute)-1]
 					//console.log(pre,'preeeeeee')
 					return pre
 				}else{
@@ -250,13 +248,13 @@ export default {
 
 			}
 			if (link == 'next'){
-				//console.log(currentRoute, yearPages,'pagesss')
+				//console.log(currentRoute, this.yearPages,'pagesss')
 				if (currentRoute == 'history'){
 				//	console.log('fuckhistory')
 				return currentRoute+'/1910'
 				}
-				if (yearPages[yearPages.indexOf(currentRoute)+1] != undefined){
-					var next=yearPages[yearPages.indexOf(currentRoute)+1]
+				if (this.yearPages[this.yearPages.indexOf(currentRoute)+1] != undefined){
+					var next=this.yearPages[this.yearPages.indexOf(currentRoute)+1]
 					//console.log(next,'neeeeeeeeeeeeeee')
 					return next
 				}else{

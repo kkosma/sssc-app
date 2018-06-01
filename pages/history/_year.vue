@@ -11,8 +11,8 @@
                 <div class="body text-col" v-html="yearsMD[year].__content"></div>
           </div>
         </div>
-        <div v-if="yearsMD[year].layout == 'vertical-2-1'" class="col-6 px-0">
-          <img v-for="(image,value,key) in yearsMD[year].images" class="img-full obj-fit-cover h-50" :src="image.thumbnail"  />
+        <div v-if="yearsMD[year].layout == 'vertical-2-1'" class="col-6 px-0" style="background-color: black;">
+          <img v-for="(image,value,key) in yearsMD[year].images" :class="'img-full obj-fit-cover img-'+image.imagesize" :src="image.thumbnail"  />
         </div>
       </div>
 
@@ -24,8 +24,8 @@
                 <div class="body text-col" v-html="yearsMD[year].__content"></div>
           </div>
         </div>
-        <div v-if="yearsMD[year].layout == 'vertical-1-2'" class="col-8 px-0">
-          <img v-for="(image,value,key) in yearsMD[year].images" class="img-full obj-fit-cover obj-pos-t" :src="image.thumbnail"  />
+        <div v-if="yearsMD[year].layout == 'vertical-1-2'" class="col-8 px-0" style="background-color: black;"> 
+          <img v-for="(image,value,key) in yearsMD[year].images" :class="'img-full obj-fit-cover img-'+image.imagesize" :src="image.thumbnail"  />
         </div>
       </div>
 
@@ -171,6 +171,22 @@ export default {
 @import '~/assets/css/globals.css';
 .section{
 
+}
+.img-col-6{
+  height:50%;
+  padding-bottom:8px;
+}
+.img-col-4{
+  height:33.333333%;
+  padding-bottom:8px;
+}
+.img-col-8{
+  height:66.66666666%;
+  padding-bottom:8px;
+}
+.img-col-12{
+  height:100%;
+  padding-bottom:8px;
 }
 .text-con-v{
   padding: 0px 80px;height:100%;overflow:auto;padding-bottom:80px

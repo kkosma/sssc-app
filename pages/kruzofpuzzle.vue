@@ -248,8 +248,7 @@ export default {
     };
   },
   mounted() {
-      app.activeBones=this.activeBones
-    app.bonesLeft=this.bonesLeft
+    
     // const step1=document.getElementById('step1')
     /*
     tippy('selector', {
@@ -286,7 +285,8 @@ export default {
     },
   methods: {
     boneMarkers(){
-     
+     app.activeBones=this.activeBones
+    app.bonesLeft=this.bonesLeft
       var markers= app.orca.getObjectByName('Bone Markers')
        console.log('showmarkers',markers)
         // Animate markers
@@ -669,8 +669,8 @@ export default {
           this.boneMarkers()
         }
       // Remove Bone Drag Listeners
-      document.removeEventListener("mousemove", app.dragListener);
-      document.removeEventListener("touchmove", app.dragListener);
+      document.getElementById('canvas').removeEventListener("mousemove", app.dragListener);
+      document.getElementById('canvas').removeEventListener("touchmove", app.dragListener);
       app.boneMapDragListen =false
       app.dragControls.removeEventListener("dragstart");
       app.dragControls.removeEventListener("dragend");
@@ -984,8 +984,8 @@ export default {
         );
         if (app.boneMapDragListen != true){
           console.log("ADDDBONE DRAG")
-          document.addEventListener("mousemove", app.dragListener);
-          document.addEventListener("touchmove", app.dragListener);
+          document.getElementById('canvas').addEventListener("mousemove", app.dragListener);
+          document.getElementById('canvas').addEventListener("touchmove", app.dragListener);
           app.boneMapDragListen=true
         }
       }

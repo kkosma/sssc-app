@@ -162,7 +162,7 @@ export default {
       creatMarker(buildings[building].landmark,buildings[building].landmark.coordinates)
     }
     //var backTile = L.imageOverlay('/images/history/map-tile2.png', maxBounds1,{className:'back-tile'}).addTo(map);
-    var image = L.imageOverlay('/images/history/sheldon-jackson-mapfinal.png', bounds).addTo(map);
+    var image = L.imageOverlay('/images/history/sheldon-jackson-mapfinal2.png', bounds).addTo(map);
     //var backTile = L.imageOverlay('/images/history/map-tile.png', bounds).addTo(map);
     map.fitBounds(bounds);
    // map.panTo([1000,4000])

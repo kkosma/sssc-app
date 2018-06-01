@@ -21,12 +21,12 @@
       <div class="nav">
         
         <ul>
-          <li @click="disabled ? '' : routeLink(page.link,value)" :id="value" v-for="(page,value) in pages" :to="page.link || value.toLowerCase()" :event="disabled ? '' : 'click'" v-bind:class="{ selected: selected == value}">
+          <li @click="disabled ? '' : routeLink(page.link,value)" :id="value" v-for="(page,value) in pages" :to="page.link || value.toLowerCase()" :event="disabled ? '' : 'click'" v-bind:class="{ selected: selected == page.title}">
            <a >
-            <img :src="page.img" class="img-fluid obj-fit-cover obj-pos-c">
+            <img :src="page.homeThumbnail" class="img-fluid obj-fit-cover obj-pos-c">
             <div class="animal-name" >
               
-              <span class="animal-name-text"> {{value}}</span>
+              <span class="animal-name-text"> {{page.title}}</span>
             </div>
            </a>
           </li>
@@ -79,6 +79,7 @@ if (process.browser) {
        document.getElementById('homevid').play()
       var DEBUG = true;
       this.environment == 'production' ? DEBUG = false : null
+      this.buildEnv == 'electron' ? DEBUG = false : null
       if(!DEBUG){
         if(!window.console) window.console = {};
         var methods = ['log', 'debug', 'warn', 'info'];
@@ -170,6 +171,45 @@ if (process.browser) {
       //console.log(context.env,'env')
       var netlifyIDJS
     context.env.buildEnv == 'netlify' ? netlifyIDJS='https://identity.netlify.com/v1/netlify-identity-widget.js' : netlifyIDJS=''
+    var pages=[]
+    var education = require('~/content/education.md');
+    education.link='/education'
+    pages.push(education)
+    var history = require('~/content/history.md');
+    history.link='/hisory'
+    pages.push(history)
+    var research = require('~/content/research.md');
+    research.link='/research'
+    pages.push(research)
+    var wildlife = require('~/content/wildlife.md');
+    wildlife.link='/animals'
+    pages.push(wildlife)
+    var facility = require('~/content/facility.md');
+    facility.link='/facility'
+    pages.push(facility)
+    var whalepuzzle = require('~/content/whalepuzzle.md');
+    whalepuzzle.link='/kruzofpuzzle'
+    pages.push(whalepuzzle)
+    pages.sort(function(a,b){
+      return a.order - b.order
+    })
+    console.log(pages,'PAGES')
+
+    /*
+    var pages={}
+    var education = require('~/content/education.md');
+    pages['Education']=education
+    var history = require('~/content/history.md');
+    pages['History']=history
+    var research = require('~/content/research.md');
+    pages['Research']=research
+    var wildlife = require('~/content/wildlife.md');
+    pages['Wildlife']=wildlife
+    var facility = require('~/content/facility.md');
+    pages['Facility']=facility
+    var whalepuzzle = require('~/content/whalepuzzle.md');
+    pages['Whale Puzzle']=whalepuzzle
+    console.log(pages,'PAGES')*/
     return { 
         selected:'',
         disabled: true,
@@ -179,15 +219,7 @@ if (process.browser) {
         homeSlidePos:0,
         netlifyIDJS:netlifyIDJS,
         settings: require('~/content/settings.md'),
-        pages: {
-          'History':{img:'/images/history/download.jpg',link:'/history'},
-          'Education':{img:'/images/education/nature-camp.jpg',link:'/education'},
-          'Research':{img:'/images/research/research-tile-back.jpg', link:'/research'},
-          'Facilities':{img:'/images/hatchery/alevin.jpg',link:'/facility'},
-          'Whale Puzzle':{img:'/images/kruzof/puzzle.png',link:'/kruzofpuzzle'},
-          'Wildlife':{img:'/images/uploads/horned-puffin.jpg',link:'/animals'},
-          
-        },
+        pages: pages,
         someObject:{'width':2, 'height':3,'top':1, 'left':0, 'img':1},
       
       }

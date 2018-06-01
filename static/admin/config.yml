@@ -21,6 +21,8 @@ collections:
           - {label: Heading, name: heading, widget: string}
           - {label: "Body", name: "body", widget: "markdown"}
           - {label: "Image", name: "image", widget: "image", required: true}
+          - {label: "Home Thumbnail", name: "homeThumbnail", widget: "image", required: true}
+          - {label: Menu Order, name: order, widget: number, valueType: "int", min: 1, max: 6,required: true}
       - label: "Research"
         name: "research"
         file: "content/research.md"
@@ -30,6 +32,8 @@ collections:
           - {label: Heading, name: heading, widget: string}
           - {label: "Body", name: "body", widget: "markdown"}
           - {label: "Image", name: "image", widget: "image", required: true}
+          - {label: "Home Thumbnail", name: "homeThumbnail", widget: "image", required: true}
+          - {label: Menu Order, name: order, widget: number, valueType: "int", min: 1, max: 6,required: true}
       - label: "Facilities"
         name: "facility"
         file: "content/facility.md"
@@ -39,6 +43,8 @@ collections:
           - {label: Heading, name: heading, widget: string}
           - {label: "Body", name: "body", widget: "markdown"}
           - {label: "Image", name: "image", widget: "image", required: true}
+          - {label: "Home Thumbnail", name: "homeThumbnail", widget: "image", required: true}
+          - {label: Menu Order, name: order, widget: number, valueType: "int", min: 1, max: 6,required: true}
       - label: "History"
         name: "history"
         file: "content/history.md"
@@ -48,6 +54,8 @@ collections:
           - {label: Heading, name: heading, widget: string}
           - {label: "Body", name: "body", widget: "markdown"}
           - {label: "Image", name: "image", widget: "image", required: true}
+          - {label: "Home Thumbnail", name: "homeThumbnail", widget: "image", required: true}
+          - {label: Menu Order, name: order, widget: number, valueType: "int", min: 1, max: 6,required: true}
       - label: "Animals"
         name: "animals"
         file: "content/wildlife.md"
@@ -57,6 +65,8 @@ collections:
           - {label: Heading, name: heading, widget: string}
           - {label: "Body", name: "body", widget: "markdown"}
           - {label: "Image", name: "image", widget: "image", required: true}
+          - {label: "Home Thumbnail", name: "homeThumbnail", widget: "image", required: true}
+          - {label: Menu Order, name: order, widget: number, valueType: "int", min: 1, max: 6,required: true}
 
   - label: "App Settings"
     name: "appsettings"

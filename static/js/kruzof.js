@@ -293,7 +293,7 @@ function tweenCamera(targetPosition, duration,end) {
     }
   );
 }
-
+console.log(window,'WINDOW')
 
 function tweenLoad(target, initial,duration) {
 
