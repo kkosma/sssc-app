@@ -67,6 +67,17 @@ collections:
           - {label: "Image", name: "image", widget: "image", required: true}
           - {label: "Home Thumbnail", name: "homeThumbnail", widget: "image", required: true}
           - {label: Menu Order, name: order, widget: number, valueType: "int", min: 1, max: 6,required: true}
+      - label: "Whale Puzzle"
+        name: "whalepuzzle"
+        file: "content/whalepuzzle.md"
+        delete: false
+        fields:
+          - {label: Title, name: title, widget: string}
+          - {label: Heading, name: heading, widget: string}
+          - {label: "Body", name: "body", widget: "markdown"}
+          - {label: "Image", name: "image", widget: "image", required: true}
+          - {label: "Home Thumbnail", name: "homeThumbnail", widget: "image", required: true}
+          - {label: Menu Order, name: order, widget: number, valueType: "int", min: 1, max: 6,required: true}
 
   - label: "App Settings"
     name: "appsettings"
