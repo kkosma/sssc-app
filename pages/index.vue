@@ -47,8 +47,19 @@ let environment
 let buildEnv
 //const ImagePreloader = require('image-preloader')
 if (process.browser) {
-  
 
+    
+    if (window.netlifyIdentity) {
+      console.log('netlify')
+      window.netlifyIdentity.on("init", user => {
+        if (!user) {
+          window.netlifyIdentity.on("login", () => {
+            document.location.href = "/admin/";
+          });
+        }
+      });
+    }
+  
 }
   import animallayout from '../components/animal-layout.vue'
 
@@ -58,6 +69,13 @@ if (process.browser) {
     components: {
       animallayout,
       
+    },
+    head() {
+      return{
+        script:[
+          {src:this.netlifyIDJS}
+        ]
+      }
     },
     methods:{
       routeLink(link,activeLink){
@@ -159,7 +177,8 @@ if (process.browser) {
     },
     asyncData (context) {
       //console.log(context.env,'env')
-     
+      var netlifyIDJS
+    context.env.buildEnv == 'netlify' ? netlifyIDJS='https://identity.netlify.com/v1/netlify-identity-widget.js' : netlifyIDJS=''
     return { 
         selected:'',
         disabled: true,
@@ -167,6 +186,7 @@ if (process.browser) {
         buildEnv:context.env.buildEnv,
         current: context.route.name,
         homeSlidePos:0,
+        netlifyIDJS:netlifyIDJS,
         settings: require('~/content/settings.md'),
         pages: {
           'History':{img:'/images/history/download.jpg',link:'/history'},
