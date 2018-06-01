@@ -28,12 +28,14 @@ console.log(`Nuxt working on ${_NUXT_URL_}`)
 ** Electron
 */
 let win = null // Current window
-const { app, Menu, BrowserWindow, webFrame, net } = require('electron')
+const { app, Menu, BrowserWindow, webFrame, net, protocol, ipcMain } = require('electron')
 
 const path = require('path')
 
 //const extract = require('extract-zip')
 const Downloader = require('mt-files-downloader');
+const log = require('electron-log');
+const { autoUpdater } = require("electron-updater");
 var url = require("url")
 var curDls = 0; // Number of current download in progress
 const simultaneousDownload = 5; // As indicated by his name :)
@@ -47,6 +49,11 @@ var registerDlEvents = function (num, dl) {
 	printStats(dl, num);
 };
 */
+
+autoUpdater.logger = log;
+autoUpdater.logger.transports.file.level = 'info';
+log.info('App starting...');
+
 
 // Get a path to prepend to any nodejs calls that are getting at files in the package,
 // so that it works both from source and in an asar-packaged mac app.
@@ -239,31 +246,22 @@ var getGitUrls = function () {
 
 }
 
-
+const name = app.getName();
+const version = app.getVersion()
 const template = [
 	{
-		label: 'SSSC App',
+		label: name,
 		submenu: [
 			{
 				label: 'Update',
 				click() {
 					getGitUrls()
-				}
+				},
+			},
+			{
+				label: 'About ' + name + ' ' +version,
+				role: 'about'
 			}
-		]
-	},
-	{
-		label: 'Edit',
-		submenu: [
-			{ role: 'undo' },
-			{ role: 'redo' },
-			{ type: 'separator' },
-			{ role: 'cut' },
-			{ role: 'copy' },
-			{ role: 'paste' },
-			{ role: 'pasteandmatchstyle' },
-			{ role: 'delete' },
-			{ role: 'selectall' }
 		]
 	},
 	{
@@ -298,12 +296,23 @@ const template = [
 	}
 ]
 var kioskMode
+let autoUpdateURL = `file://${__dirname}/version.html#v${app.getVersion()}`
+/*
+let autoUpdateURL = require('url').format({
+	protocol: 'file',
+	slashes: true,
+	pathname: require('path').join(__dirname, '/version.html#v'+version)
+})*/
 config.dev ? kioskMode = false : kioskMode = true
 let updateUrl = require('url').format({
 	protocol: 'file',
 	slashes: true,
 	pathname: require('path').join(__dirname, 'update.html')
 })
+function sendStatusToWindow(text) {
+	log.info(text);
+	win.webContents.send('message', text);
+}
 const newWin = () => {
 	win = new BrowserWindow({
 		icon: path.join(__dirname, 'static/icon.png'),
@@ -313,6 +322,7 @@ const newWin = () => {
 		},
 		kiosk: kioskMode
 	})
+	//win.webContents.openDevTools();
 	win.setBackgroundColor("#000000")
 	win.setSize(1920,1080);
 	let webContents = win.webContents;
@@ -326,7 +336,7 @@ const newWin = () => {
 	Menu.setApplicationMenu(menu)
 	//	win.maximize()
 	win.on('closed', () => win = null)
-	win.loadURL(updateUrl)
+	win.loadURL(autoUpdateURL)
 	if (config.dev) {
 		// Install vue dev tool and open chrome dev tools
 		const { default: installExtension, VUEJS_DEVTOOLS } = require('electron-devtools-installer')
@@ -337,14 +347,14 @@ const newWin = () => {
 		// Wait for nuxt to build
 		const pollServer = () => {
 			http.get(_NUXT_URL_, (res) => {
-				if (res.statusCode === 200) {  win.loadURL(_NUXT_URL_)  } else { setTimeout(pollServer, 300) }
+				if (res.statusCode === 200) {   } else { setTimeout(pollServer, 300) }
 			}).on('error', pollServer)
 		}
 		pollServer()
 	} else { 
 		
 	//	return win.loadURL(updateUrl) 
-		return win.loadURL(_NUXT_URL_) 
+		//return win.loadURL(_NUXT_URL_) 
 	}
 }
 app.commandLine.appendSwitch('--force-gpu-rasterization')
@@ -352,6 +362,32 @@ app.commandLine.appendSwitch('--enable-accelerated-2d-canvas')
 app.commandLine.appendSwitch('--enable-threaded-compositing')
 
 //console.log(app.getGPUFeatureStatus(),'gpustat')
+
+autoUpdater.on('checking-for-update', () => {
+	sendStatusToWindow('Checking for update...');
+})
+autoUpdater.on('update-available', (info) => {
+	sendStatusToWindow('Update available.');
+})
+autoUpdater.on('update-not-available', (info) => {
+	sendStatusToWindow('Update not available.');
+})
+autoUpdater.on('error', (err) => {
+	sendStatusToWindow('Error in auto-updater. ' + err);
+})
+autoUpdater.on('download-progress', (progressObj) => {
+	let log_message = "Download speed: " + progressObj.bytesPerSecond;
+	log_message = log_message + ' - Downloaded ' + progressObj.percent + '%';
+	log_message = log_message + ' (' + progressObj.transferred + "/" + progressObj.total + ')';
+	sendStatusToWindow(log_message);
+})
+autoUpdater.on('update-downloaded', (info) => {
+	sendStatusToWindow('Update downloaded');
+});
 app.on('ready', newWin)
+app.on('ready', function () {
+	sendStatusToWindow('start auto update');
+	autoUpdater.checkForUpdatesAndNotify();
+});
 app.on('window-all-closed', () => app.quit())
 app.on('activate', () => win === null && newWin())

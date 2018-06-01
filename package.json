@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Sitka Sound Science Center Aquarium App",
   "author": "Kyle Kosma",
-  "private": true,
+  "repository": "github:kkosma/sssc-app",
   "main": "main.js",
   "config": {
     "nuxt": {
@@ -12,8 +12,16 @@
     }
   },
   "build": {
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "kkosma",
+        "repo": "sssc-app"
+      }
+    ],
     "asar": false,
     "appId": "com.electron.sssc-app",
+    "productName": "SSSC App",
     "directories": {},
     "mac": {
       "identity": null
@@ -41,12 +49,14 @@
     "markdown-with-front-matter-loader": "^0.1.0",
     "nuxt": "^1.4.0",
     "mt-files-downloader": "git+https://git@github.com/Fer0x/node-mt-files-downloader.git",
-    "vue-loader": "13.7.2"
+    "vue-loader": "13.7.2",
+    "electron-updater": "^2.21.10",
+    "electron-log": "^2.2.14"
   },
   "devDependencies": {
     "cross-env": "^5.1.4",
     "electron": "2.0.1",
-    "electron-builder": "^20.8.1",
+    "electron-builder": "^20.15.0",
     "electron-devtools-installer": "^2.2.3",
     "babel-eslint": "^7.2.3",
     "eslint": "^4.3.0",

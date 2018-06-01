@@ -193,7 +193,7 @@ if (process.browser) {
     pages.sort(function(a,b){
       return a.order - b.order
     })
-    console.log(pages,'PAGES')
+    //console.log(pages,'PAGES')
 
     /*
     var pages={}
