@@ -48,17 +48,7 @@ let buildEnv
 //const ImagePreloader = require('image-preloader')
 if (process.browser) {
 
-    
-    if (window.netlifyIdentity) {
-      console.log('netlify')
-      window.netlifyIdentity.on("init", user => {
-        if (!user) {
-          window.netlifyIdentity.on("login", () => {
-            document.location.href = "/admin/";
-          });
-        }
-      });
-    }
+
   
 }
   import animallayout from '../components/animal-layout.vue'
@@ -73,7 +63,8 @@ if (process.browser) {
     head() {
       return{
         script:[
-          {src:this.netlifyIDJS}
+          {src:this.netlifyIDJS},
+          { src: 'js/netlifyCheck.js', body: true },
         ]
       }
     },
