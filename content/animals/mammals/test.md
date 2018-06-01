@@ -1,6 +1,6 @@
 ---
-image: /images/uploads/eva-texture.png
-title: Test
+image: /images/uploads/Craig Cottage.jpg
+title: Test2
 scientific: test
 distribution: test
 size: test
