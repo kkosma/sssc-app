@@ -176,7 +176,7 @@ if (process.browser) {
     education.link='/education'
     pages.push(education)
     var history = require('~/content/history.md');
-    history.link='/hisory'
+    history.link='/history'
     pages.push(history)
     var research = require('~/content/research.md');
     research.link='/research'

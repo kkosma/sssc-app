@@ -146,6 +146,7 @@ export default {
       tutorialActive: true,
       bones: bones,
       activeBones: [],
+      helpToggle:false,
       bonesLeft: Object.keys(bones),
       current: context.route.name,
       category: context.params.category,
@@ -339,38 +340,34 @@ export default {
 
         
     },
+    toggleBoneMarkerBtn(state){
+      var boneMarkBtn=document.getElementsByClassName('boneMarkers')[0]
+      var opacity
+      state == 'off' ? boneMarkBtn.style.pointerEvents="none" : boneMarkBtn.style.pointerEvents="initial"
+      state == 'off' ? opacity=.25 : opacity=1
+        Velocity(
+          boneMarkBtn,
+          { opacity: opacity, },
+          {
+            easing: "easeInOutQuad",
+            duration: 350,
+            complete: function(elements) {
+            }
+          }
+        );
+    },
     skinSwitch(){
       var boneMarkBtn=document.getElementsByClassName('boneMarkers')[0]
       if (app.state.view == 'bones'){
         app.resetGame(true,'skin',app.state.moveKruzof)
         app.state.view = 'skin'
-
-        boneMarkBtn.style.pointerEvents="none"
-        Velocity(
-          boneMarkBtn,
-          { opacity: .25, },
-          {
-            easing: "easeInOutQuad",
-            duration: 350,
-            complete: function(elements) {
-            }
-          }
-        );
+        this.toggleBoneMarkerBtn('off')
+       
       }else{
         app.resetGame(true,'bones',app.state.moveKruzof)
         app.state.view = 'bones'
 
-        boneMarkBtn.style.pointerEvents="initial"
-        Velocity(
-          boneMarkBtn,
-          { opacity: 1, },
-          {
-            easing: "easeInOutQuad",
-            duration: 350,
-            complete: function(elements) {
-            }
-          }
-        );
+        this.toggleBoneMarkerBtn('on')
       }
       if(app.state.boneMarkers == true){
         this.boneMarkers()
@@ -526,19 +523,33 @@ export default {
       //step1.style.visibility='visible'
     },
     restartTutorial() {
-      //document.getElementById("restart).style.visibility='hidden'
       var tutorialStep = document.getElementById("steprestart");
       var step1 = document.getElementById("step1");
-      this.tutorialActive = true;
-      console.log("restart");
-      tutorialStep.style.visibility = "visible";
-      Velocity(
-        document.getElementById("steprestart"),
-        { opacity: 1, scale: [1, 0.9] },
-        { easing: [0.175, 0.885, 0.32, 1.575], duration: 350 }
-      );
-      step1.querySelector(".tutorial-content").innerHTML =
-        "<span class='subhead'>This is your bone shelf</span><p>You can drag bones from here into the 3D space above.<br>Give it a shot!</p>";
+
+      if(this.helpToggle ==false){
+        this.helpToggle=true
+        //document.getElementById("restart).style.visibility='hidden'
+        //this.tutorialActive = true;
+        console.log("restart");
+        tutorialStep.style.visibility = "visible";
+        Velocity(
+          document.getElementById("steprestart"),
+          { opacity: 1, scale: [1, 0.9] },
+          { easing: [0.175, 0.885, 0.32, 1.575], duration: 350 }
+        );
+        step1.querySelector(".tutorial-content").innerHTML =
+          "<span class='subhead'>This is your bone shelf</span><p>You can drag bones from here into the 3D space above.<br>Give it a shot!</p>";
+      }else{
+        this.helpToggle=false
+        tutorialStep.style.visibility = "visible";
+        Velocity(
+          document.getElementById("steprestart"),
+          { opacity: 0, scale: [ 0.9] },
+          { easing: [0.6, -0.58, 0.735, 0.045], duration: 350 }
+        );
+
+      }
+
       //step1.style.visibility='visible'
     },
     endTutorial(event) {
@@ -581,8 +592,14 @@ export default {
     },
     tutorialNext(event) {
       console.log("nexet", event);
+      this.tutorialActive = true;
       var currentStep = event.target.getAttribute("data-step");
       var nextStep = event.target.getAttribute("data-next");
+
+      if ( nextStep == 1 && app.state.endGame == true){
+        nextStep=2
+      }
+
       console.log(nextStep, currentStep);
       Velocity(
         document.getElementById("step" + currentStep),
@@ -610,10 +627,12 @@ export default {
       var rightBtn=popper.querySelector(".btn-right")
       var leftBtn=popper.querySelector(".btn-left")
       console.log('pop',pos,rBtnFunc,rightBtn,)
+      var scope=this
       rightBtn.onclick=function(){
         app.resetGame(true,'bones',true)
         app.state.view = 'bones'
         app.state.moveKruzof= false
+        scope.toggleBoneMarkerBtn('on')
        // app.tweenOpacity(app.skinGroup,0,document.body)
         //app.tweenOpacity(app.orca,1,document.body)
         //app.tweenPosition(app.skinGroup,{x:app.skinGroup.position.x,y:app.skinGroup.position.y,z:-1.5 - app.end.transform.zSkin},document.getElementsByTagName('DIV')[0])
@@ -677,6 +696,8 @@ export default {
       app.dragControls.enabled = false;
       app.dragControls.deactivate();
       app.dragControls=null
+
+      this.toggleBoneMarkerBtn('off')
 
       setTimeout(() => {
         scope.popper(
