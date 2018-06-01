@@ -5,8 +5,6 @@ year: '2003'
 images:
   - imagesize: col-6
     thumbnail: /images/uploads/Lauren_dive.jpg
-  - imagesize: col-6
-    thumbnail: /images/uploads/Mechanical_drawing_class.jpg
 ---
 Thank you for inviting us to be part of Jane's graduation celebration. We're eager to see you all again. This event will make seeing you even more special.
 
