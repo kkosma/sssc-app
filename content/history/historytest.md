@@ -3,7 +3,7 @@ layout: vertical-1-2
 title: historyteste
 year: '2003'
 images:
-  - imagesize: col-6
+  - imagesize: col-12
     thumbnail: /images/uploads/Lauren_dive.jpg
 ---
 Thank you for inviting us to be part of Jane's graduation celebration. We're eager to see you all again. This event will make seeing you even more special.
