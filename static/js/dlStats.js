@@ -47,7 +47,7 @@ module.exports = function ( num,downloads,win) {
 		progress = progress / (dls.length +1); // I don't know why +1 but it is needed x)
 		eta = eta / dls.length;
     frontData.progress=progress
-    frontData.eta=eta
+		frontData.eta = '&#x2248; ' + Math.floor(eta) + 's ' + Downloader.Formatters.remainingTime(eta)
 		console.log('Download progress: ' + progress + ' %');
 		//console.log('Download speed: ' + Downloader.Formatters.speed(speed));
     console.log('Download ETA: ' + Math.floor( eta)+'s' + Downloader.Formatters.remainingTime(eta));
