@@ -242,7 +242,7 @@ var getGitUrls = function () {
 
 const template = [
 	{
-		label: 'name',
+		label: 'SSSC App',
 		submenu: [
 			{
 				label: 'Update',
@@ -297,7 +297,13 @@ const template = [
 		]
 	}
 ]
-
+var kioskMode
+config.dev ? kioskMode = false : kioskMode = true
+let updateUrl = require('url').format({
+	protocol: 'file',
+	slashes: true,
+	pathname: require('path').join(__dirname, 'update.html')
+})
 const newWin = () => {
 	win = new BrowserWindow({
 		icon: path.join(__dirname, 'static/icon.png'),
@@ -305,8 +311,10 @@ const newWin = () => {
 		webPreferences: {
 	
 		},
-		kiosk: true
+		kiosk: kioskMode
 	})
+	win.setBackgroundColor("#000000")
+	win.setSize(1920,1080);
 	let webContents = win.webContents;
 	webContents.on('did-finish-load', () => {
 		webContents.setZoomFactor(1);
@@ -318,6 +326,7 @@ const newWin = () => {
 	Menu.setApplicationMenu(menu)
 	//	win.maximize()
 	win.on('closed', () => win = null)
+	win.loadURL(updateUrl)
 	if (config.dev) {
 		// Install vue dev tool and open chrome dev tools
 		const { default: installExtension, VUEJS_DEVTOOLS } = require('electron-devtools-installer')
@@ -328,11 +337,15 @@ const newWin = () => {
 		// Wait for nuxt to build
 		const pollServer = () => {
 			http.get(_NUXT_URL_, (res) => {
-				if (res.statusCode === 200) { win.loadURL(_NUXT_URL_) } else { setTimeout(pollServer, 300) }
+				if (res.statusCode === 200) {  win.loadURL(_NUXT_URL_)  } else { setTimeout(pollServer, 300) }
 			}).on('error', pollServer)
 		}
 		pollServer()
-	} else { return win.loadURL(_NUXT_URL_) }
+	} else { 
+		
+	//	return win.loadURL(updateUrl) 
+		return win.loadURL(_NUXT_URL_) 
+	}
 }
 app.commandLine.appendSwitch('--force-gpu-rasterization')
 app.commandLine.appendSwitch('--enable-accelerated-2d-canvas')

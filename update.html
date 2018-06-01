@@ -2,36 +2,119 @@
 <html lang="en">
 
 <head>
- 
+  <style>
+    @font-face {
+    font-family: Sofia;
+    src: url('./static/fonts/SofiaProLight.woff2');
+    font-weight:300;
+    }
+    body{
+      display:flex;
+      justify-content:center;
+      height:100%;
+      width:100%;
+      position:absolute;
+      background:url('./static/images/loading-back.jpg');
+      background-size:100%;
+      background-position:top;
+      background-repeat:no-repeat;
+      padding:0;
+      margin:0;
+      flex-direction: column
+    }
+    .overlay{
+      background:rgba(0,0,0,.4);
+      height:100%;
+      width:100%;
+      position:absolute;
+      left:0;
+      top:0;
+
+    }
+    #logo{
+      background:url('./static/images/logo.svg');
+      width:100px;
+      height:100px;
+      display:flex;
+      align-self:center;
+      z-index:2;
+      position:absolute;
+      bottom:30px;
+      left:30px;
+    }
+    #statusText{
+      display:flex;
+      align-self:center;
+      font-family:Sofia;
+      color:white;
+      z-index:2;
+      margin:1rem 0;
+      margin-bottom:.5rem;
+      text-align:center
+    }
+    #progressText{
+      display:flex;
+      align-self:center;
+      font-family:Sofia;
+      color:white;
+      z-index:2;
+      font-size:1.5rem;
+      margin:1rem 0;
+      margin-top:.5rem;
+      text-align:center
+    }
+    #eta{
+      display:flex;
+      align-self:center;
+      font-family:Sofia;
+      color:white;
+      z-index:2;
+      font-size:1rem;
+      margin:.9rem 0;
+      margin-top:.5rem;
+      text-align:center
+    }
+  </style>
 </head>
 
 <body>
- <h1 id="loader">Loading...</h1>
+  <div id="logo"></div>
+ <h1 id="statusText">Launching App</h1>
+ <div class="overlay"></div>
+ 
  <h2 id="progressText"></h2>
+ <h2 id="eta"></h2>
  <a href="" id="home"></a>
   <script>
   const { ipcRenderer } = require('electron');
   var progressText=document.getElementById('progressText')
   var home = document.getElementById('home')
+  var statusText= document.getElementById('statusText')
+  var eta= document.getElementById('eta')
   ipcRenderer.on('loading', (event, data) => {
     console.log(data,'data'); // prints 'do something for me'
-    progressText.innerHTML=Math.floor(data.progress)
+    statusText.innerHTML = "Loading..."
+    progressText.innerHTML=Math.floor(data.progress)+'%'
+    eta.innerHTML=data.eta
+   
   });
   ipcRenderer.on('doneLoading', (event, data) => {
     console.log(data, 'data'); // prints 'do something for me'
-    progressText.innerHTML = "Finished Loading"
+    statusText.innerHTML = "Finished Loading"
+    progressText.innerHTML = ''
+    eta.innerHTML=''
   });
   ipcRenderer.on('cleaningFiles', (event, data) => {
       console.log(data, 'data'); // prints 'do something for me'
-      progressText.innerHTML = "Cleaning up.."
+      statusText.innerHTML = "Cleaning up..."
   });
   ipcRenderer.on('rebuilding', (event, data) => {
     console.log(data, 'data'); // prints 'do something for me'
-    progressText.innerHTML = "Building App.."
+    statusText.innerHTML = "Rebuilding App..."
   });
   ipcRenderer.on('restarting', (event, data) => {
       console.log(data, 'data'); // prints 'do something for me'
-      progressText.innerHTML = "Restarting App.."
+      statusText.innerHTML = "Restarting App..."
   });
   ipcRenderer.on('reloadNuxt', (event, data) => {
       console.log(data, 'data'); // prints 'do something for me'
