@@ -1,17 +1,11 @@
 ---
-layout: vertical-1-2
-title: historyteste
-year: '2003'
+layout: horizontal
+title: historytest
+year: '2008'
 images:
-  - imagesize: col-12
-    thumbnail: /images/uploads/Lauren_dive.jpg
+  - imagesize: col-4
+    thumbnail: /images/uploads/Jackson Museum.jpg
+  - imagesize: col-8
+    thumbnail: /images/uploads/aquarium.jpg
 ---
-Thank you for inviting us to be part of Jane's graduation celebration. We're eager to see you all again. This event will make seeing you even more special.
-
-
-
-We'll be arriving Thursday at 7:00 p.m. on flight 401. Thank you for offering to pick us up and getting us a room at the Doe Inn. You seem to think of everything.
-
-
-
-We look forward to spending this time with you and getting better acquainted with Jane and her husband.
+For more information, see Registry Key Security and Access Rights. ... For string-based types, such as REG_SZ, the string must be null-terminated. ... Windows 2000 Professional, Windows XP \[desktop apps only] ... Surface Book 2 · Surface Pro · Xbox One X · Xbox One S · VR & mixed reality · Windows 10 apps · Office apps ...
