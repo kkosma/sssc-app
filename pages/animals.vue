@@ -15,8 +15,8 @@
         <li ><nuxt-link to="/animals/Invertebrates" @click.native="animalClass($event,$router)" data-category="Invertebrates" data-hue="221" data-hex="#04297b">Invertebrates</nuxt-link></li>
         <li ><nuxt-link to="/animals/Mammals" @click.native="animalClass($event,$router)" data-category="Mammals"  data-hue="202" data-hex="#156a9b">Mammals</nuxt-link></li>
         <li ><nuxt-link to="/animals/Fish" @click.native="animalClass($event,$router)" data-category="Fish"  data-hue="178" data-hex="#28918d">Fish</nuxt-link></li>
-        <li ><nuxt-link to="/animals/Salmon" @click.native="animalClass($event,$router)" data-category="Salmon"  data-hue="28" data-hex="#61350e">Salmon</nuxt-link></li>
-        <li ><nuxt-link to="/animals/Birds" @click.native="animalClass($event,$router)" data-category="Birds"  data-hue="97" data-hex="#426f26">Birds</nuxt-link></li>
+        <li ><nuxt-link to="/animals/Salmon" @click.native="animalClass($event,$router)" data-category="Salmon"  data-hue="97" data-hex="#426f26">Salmon</nuxt-link></li>
+        <li ><nuxt-link to="/animals/Birds" @click.native="animalClass($event,$router)" data-category="Birds"  data-hue="28" data-hex="#61350e">Birds</nuxt-link></li>
       </ul>
     </div>
   

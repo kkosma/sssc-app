@@ -14,7 +14,7 @@
       height:100%;
       width:100%;
       position:absolute;
-      background:url('./static/images/loading-back.jpg');
+      background:url('./static/images/loading-back2.jpg');
       background-size:100%;
       background-position:top;
       background-repeat:no-repeat;
@@ -80,7 +80,7 @@
 <body>
   <div id="logo"></div>
 
- <h1 id="statusText">Launching App</h1>
+ <h1 id="statusText"></h1>
  <div class="overlay"></div>
  
  <h2 id="progressText"></h2>
@@ -129,6 +129,11 @@
       home.href=data
 
     });
+  ipcRenderer.on('launching', (event, data) => {
+    console.log(data, 'data'); // prints 'do something for me'
+    statusText.innerHTML = "Launching App"
+
+  });
   ipcRenderer.on('message', function (event, text) {
       console.log(message, 'message')
       message.innerHTML = text;

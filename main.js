@@ -137,10 +137,10 @@ function cleanUpFiles(remoteFiles) {
 		console.error(err) // eslint-disable-line no-console
 		process.exit(1)
 	})
-	nuxt.hook('build:done', async builder => {
+	nuxt.hook('build:done', builder => {
 		win.webContents.send('restarting', null);
+		app.relaunch()
 		setTimeout(function () {
-			app.relaunch()
 			app.exit(0)
 		}, 1000)
 		//reloadHome()
@@ -209,7 +209,7 @@ var getGitUrls = function () {
 		pathname: require('path').join(__dirname, 'update.html')
 	})
 	win.loadURL(url)
-	win.webContents.send('loading', 'do something for me');
+	win.webContents.send('loading', 'Checking for content updates');
 	let body = ''
 	let found
 	function getContent(value) {
@@ -250,23 +250,23 @@ const name = app.getName();
 const version = app.getVersion()
 const template = [
 	{
-		label: name,
+		label: 'SSSC App',
 		submenu: [
 			{
-				label: 'Update',
+				label: 'Home',
+				click() {
+					win.loadURL(_NUXT_URL_)
+				}
+			},
+			{
+				label: 'Check for content update',
 				click() {
 					getGitUrls()
 				},
 			},
 			{
-				label: 'About ' + name + ' ' +version,
-				role: 'about'
-			},
-			{
-				label: 'Home ',
-				click() {
-					win.loadURL(_NUXT_URL_)
-				}
+				label: 'Version ' + name + ' ' +version,
+
 			}
 			
 		]
@@ -357,7 +357,7 @@ const newWin = () => {
 		// Wait for nuxt to build
 		const pollServer = () => {
 			http.get(_NUXT_URL_, (res) => {
-				if (res.statusCode === 200) {   } else { setTimeout(pollServer, 300) }
+				if (res.statusCode === 200) {  win.loadURL(_NUXT_URL_) } else { setTimeout(pollServer, 300) }
 			}).on('error', pollServer)
 		}
 		pollServer()
@@ -393,12 +393,18 @@ autoUpdater.on('download-progress', (progressObj) => {
 	sendStatusToWindow(log_message);
 })
 autoUpdater.on('update-downloaded', (info) => {
-	sendStatusToWindow('Update downloaded');
+	sendStatusToWindow('Update downloaded > Restarting to install.');
+	setTimeout(function () {
+		autoUpdater.quitAndInstall();  
+	}, 1000)
+	
 });
 app.on('ready', newWin)
 app.on('ready', function () {
 	sendStatusToWindow('Checking for updates...');
-	autoUpdater.checkForUpdatesAndNotify();
+	if (!config.dev) {
+		autoUpdater.checkForUpdatesAndNotify()
+	}
 });
 app.on('window-all-closed', () => app.quit())
 app.on('activate', () => win === null && newWin())
