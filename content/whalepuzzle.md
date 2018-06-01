@@ -1,5 +1,5 @@
 ---
-title: Whale Puzzler
+title: Whale Puzzle
 heading: na
 image: /images/uploads/puzzle.png
 homeThumbnail: /images/uploads/puzzle.png
