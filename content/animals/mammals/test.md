@@ -1,12 +1,10 @@
 ---
-image: /images/uploads/Craig Cottage.jpg
-title: Test2
+image: /images/uploads/common-raven.jpg
+title: test
 scientific: test
 distribution: test
 size: test
-lifespan: ste
+lifespan: test
 category: mammals
 ---
-**This feature is available on paid team plans**
-
-Global password protection and role-based visitor access control with JSON Web Tokens (JWT) are available on paid team plans. Transfer your site to a paid team to activate these features.
+test
