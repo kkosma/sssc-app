@@ -261,7 +261,14 @@ const template = [
 			{
 				label: 'About ' + name + ' ' +version,
 				role: 'about'
+			},
+			{
+				label: 'Home ',
+				click() {
+					win.loadURL(_NUXT_URL_)
+				}
 			}
+			
 		]
 	},
 	{
@@ -304,14 +311,17 @@ let autoUpdateURL = require('url').format({
 	pathname: require('path').join(__dirname, '/version.html#v'+version)
 })*/
 config.dev ? kioskMode = false : kioskMode = true
+/*
 let updateUrl = require('url').format({
 	protocol: 'file',
 	slashes: true,
 	pathname: require('path').join(__dirname, 'update.html')
-})
+})*/
+let updateUrl = `file://${__dirname}/update.html#v${app.getVersion()}`
 function sendStatusToWindow(text) {
 	log.info(text);
 	win.webContents.send('message', text);
+
 }
 const newWin = () => {
 	win = new BrowserWindow({
@@ -336,7 +346,7 @@ const newWin = () => {
 	Menu.setApplicationMenu(menu)
 	//	win.maximize()
 	win.on('closed', () => win = null)
-	win.loadURL(autoUpdateURL)
+	win.loadURL(updateUrl)
 	if (config.dev) {
 		// Install vue dev tool and open chrome dev tools
 		const { default: installExtension, VUEJS_DEVTOOLS } = require('electron-devtools-installer')
@@ -371,6 +381,7 @@ autoUpdater.on('update-available', (info) => {
 })
 autoUpdater.on('update-not-available', (info) => {
 	sendStatusToWindow('Update not available.');
+	win.loadURL(_NUXT_URL_) 
 })
 autoUpdater.on('error', (err) => {
 	sendStatusToWindow('Error in auto-updater. ' + err);
@@ -386,7 +397,7 @@ autoUpdater.on('update-downloaded', (info) => {
 });
 app.on('ready', newWin)
 app.on('ready', function () {
-	sendStatusToWindow('start auto update');
+	sendStatusToWindow('Checking for updates...');
 	autoUpdater.checkForUpdatesAndNotify();
 });
 app.on('window-all-closed', () => app.quit())

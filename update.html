@@ -79,6 +79,7 @@
 
 <body>
   <div id="logo"></div>
+
  <h1 id="statusText">Launching App</h1>
  <div class="overlay"></div>
  
@@ -91,6 +92,11 @@
   var home = document.getElementById('home')
   var statusText= document.getElementById('statusText')
   var eta= document.getElementById('eta')
+
+  let version = window.location.hash.substring(1);
+  statusText.innerText = 'Launching SSSC App '+version;
+  
+  var message = document.getElementById('statusText');
   ipcRenderer.on('loading', (event, data) => {
     console.log(data,'data'); // prints 'do something for me'
     statusText.innerHTML = "Loading..."
@@ -123,6 +129,11 @@
       home.href=data
 
     });
+  ipcRenderer.on('message', function (event, text) {
+      console.log(message, 'message')
+      message.innerHTML = text;
+      //container.appendChild(message);
+    })
   </script>
 </body>
 

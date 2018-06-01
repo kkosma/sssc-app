@@ -1,4 +1,3 @@
----
 publish:
 - provider: github
   owner: kkosma
