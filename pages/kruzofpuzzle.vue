@@ -7,6 +7,7 @@
         
       </ul>
       <ul class="right-nav " >
+        <li class="skinBtn hide" @click="skinSwitch" ><a ></a></li>
         <li class="boneMarkers" @click="boneMarkers" ><a ></a></li>
         <li class="reset" @click="resetBonesPermit" ><a ><i class="material-icons">refresh</i></a></li>
         <li class="help" @click="tutorialActive ? {} : restartTutorial()"><a >?</a></li>
@@ -61,8 +62,9 @@
       <div id="glFullscreen">
         <canvas id="example"></canvas>
       </div>
-      <div id="boneDrag">
-          <img  id="boneDragImg"  src="/images/kruzof/bones/skull.png"/>
+      <div id="boneActiveAlert">This bone has been added above.</div>
+      <div v-for="(bone,value,key) in bones" class="boneDrag" :id="value+'boneDrag'">
+          <img  :id="value+'boneDragImg'"  :src="'/images/kruzof/bones/'+value.toLowerCase()+'.png'"/>
       </div>
       <div id="dat">
 
@@ -74,7 +76,7 @@
       <div id="boneInfo">
       </div>
       <div id="bonemap">
-          <div class="bone-parts"  v-for="(bone,value,key) in bones" v-on:mousedown="activeBones.includes(value) ? {} : boneMouseDown($event) " v-on:touchstart="activeBones.includes(value) ? {} : boneMouseDown($event)"  :data-bone="value.replace(' ', '_')">
+          <div class="bone-parts"  v-for="(bone,value,key) in bones" v-on:mousedown="activeBones.includes(value) ? boneActiveAlert($event,value) : boneMouseDown($event,value) " v-on:touchstart="activeBones.includes(value) ? boneActiveAlert($event,value) : boneMouseDown($event,value)"  :data-bone="value.replace(' ', '_')">
             <img :class="bone.sizeClass" id="map_skull"  :src="'/images/kruzof/bones/'+value.toLowerCase()+'.png'"/>
             <div :class="'bone-mask '+ bone.sizeClass" :style="'-webkit-mask-image:url(/images/kruzof/bones/'+value.toLowerCase()+'.png)'"></div>
           </div>
@@ -241,36 +243,13 @@ export default {
     return {
       title: this.name,
       script: [
-         /*
-        { src: "../js/three/build/three.min.js" },
-        { src: "../js/three/loaders/JDLoader.min.js" },
-        { src: "../js/three/controls/OrbitControlsSmooth.js" },
-        { src: "../js/three/controls/DragControls.js" },
-        { src: "../js/three/loaders/LoaderSupport.js" },
-        { src: "../js/three/loaders/OBJLoader2.js" },
-        //{ src: "../js/three/lights/RectAreaLightUniformsLib.js" }
-
-        { src: "../js/three/shaders/CopyShader.js"},
-        { src: "../js/three/postprocessing/EffectComposer.js"},
-        { src: "../js/three/postprocessing/ClearPass.js"},
-        { src: "../js/three/postprocessing/RenderPass.js"},
-         { src: "../js/three/postprocessing/MaskPass.js"},
-         { src: "../js/three/postprocessing/ShaderPass.js"}
-       
-        { src: "../js/three/postprocessing/EffectComposer.js" },
-        { src: "../js/three/postprocessing/RenderPass.js" },
-        { src: "../js/three/postprocessing/ShaderPass.js" },
-        { src: "../js/three/postprocessing/SAOPass.js" },
-        { src: "../js/three/shaders/CopyShader.js" },
-        { src: "../js/three/shaders/SAOShader.js" },
-        { src: "../js/three/shaders/DepthLimitedBlurShader.js" },
-        { src: "../js/three/shaders/UnpackDepthRGBAShader.js" }
-
-        */
+      
       ]
     };
   },
   mounted() {
+      app.activeBones=this.activeBones
+    app.bonesLeft=this.bonesLeft
     // const step1=document.getElementById('step1')
     /*
     tippy('selector', {
@@ -313,6 +292,9 @@ export default {
         // Animate markers
         function tweenMarkers(x, y, z,opacity, marker, domElement) {
           var markerSizes=[]
+           var info = document.getElementById('boneName')
+           //info.innerHTML='Kruzof'
+           var initialInfoOpacity=info.style.opacity
           for (var i = 0; i < markers.children.length; i++) {
             var marker = markers.children[i]
             markerSizes[i]={}
@@ -335,6 +317,7 @@ export default {
               duration: 500,
               progress: function (elements, complete, remaining, current, tweenValue) {
                 //console.log('tweenma')
+                info.style.opacity= 1 + deltaO *tweenValue
                 for (var i = 0; i < markers.children.length; i++) {
                   var marker = markers.children[i]
                   marker.material.opacity=startingO + (deltaO * tweenValue)
@@ -347,14 +330,80 @@ export default {
         }
         if(app.state.boneMarkers == true){
           tweenMarkers(0,0,1,0,markers.children[0]);app.state.boneMarkers = false
+           app.orca.getObjectByName(app.activeMarker.name.split(' ').join('_')).material = app.activeBoneHighlight
         }else{
           tweenMarkers(.6,.6,1,1,markers.children[0]);app.state.boneMarkers = true
+          var info = document.getElementById('boneName')
+           info.innerHTML='Kruzof'
         }
 
         
     },
+    skinSwitch(){
+      var boneMarkBtn=document.getElementsByClassName('boneMarkers')[0]
+      if (app.state.view == 'bones'){
+        app.resetGame(true,'skin',app.state.moveKruzof)
+        app.state.view = 'skin'
+
+        boneMarkBtn.style.pointerEvents="none"
+        Velocity(
+          boneMarkBtn,
+          { opacity: .25, },
+          {
+            easing: "easeInOutQuad",
+            duration: 350,
+            complete: function(elements) {
+            }
+          }
+        );
+      }else{
+        app.resetGame(true,'bones',app.state.moveKruzof)
+        app.state.view = 'bones'
+
+        boneMarkBtn.style.pointerEvents="initial"
+        Velocity(
+          boneMarkBtn,
+          { opacity: 1, },
+          {
+            easing: "easeInOutQuad",
+            duration: 350,
+            complete: function(elements) {
+            }
+          }
+        );
+      }
+      if(app.state.boneMarkers == true){
+        this.boneMarkers()
+      }
+      if(app.state.moveKruzof==true){
+        var popper=document.getElementById("popper")
+        Velocity(
+            popper,
+            { opacity: 0, scale: 0.9 },
+            {
+              easing: [0.6, -0.58, 0.735, 0.045],
+              duration: 350,
+              complete: function(elements) {
+                popper.style.visibility='hidden'
+              }
+            }
+          );
+      }
+      app.state.moveKruzof=false
+    },
     resetBones() {
       var scope=this
+      Velocity(
+        document.getElementsByClassName('skinBtn')[0],
+        { opacity: 0, scale: 1 },
+        {
+          easing: [0.6, -0.58, 0.735, 0.045],
+          duration: 350,
+          complete: function(elements) {
+            document.getElementsByClassName('skinBtn')[0].style.visibility='hidden'
+          }
+        }
+      );
       Velocity(
         document.getElementById("stepresetBones"),
         { opacity: 0, scale: 0.9 },
@@ -369,7 +418,16 @@ export default {
         }
       );
       console.log(app.state.endGame,'appstete')
+      if(app.state.view == 'skin'){
+        
+         app.resetGame(false,'bones', app.state.moveKruzof);
+         app.state.view='bones'
+        
+      }
+      
+
       if(app.state.endGame == true){
+        
         Velocity(document.getElementById('bonemap'), { translateY: '0px' }, {
           duration: 1200, easing: [100,20], complete: function (elements) { }
 
@@ -379,6 +437,7 @@ export default {
         app.state.endGame = false
       }
       this.bonesLeft = Object.keys(this.bones);
+      app.bonesLeft=this.bonesLeft
      
       for (var i = 0; i < this.activeBones.length; i++) {
         var assembledBone=app.orca.getObjectByName(this.activeBones[i])
@@ -549,13 +608,30 @@ export default {
      
       var popper=document.getElementById("popper")
       var rightBtn=popper.querySelector(".btn-right")
+      var leftBtn=popper.querySelector(".btn-left")
       console.log('pop',pos,rBtnFunc,rightBtn,)
       rightBtn.onclick=function(){
-        app.resetGame()
+        app.resetGame(true,'bones',true)
+        app.state.view = 'bones'
+        app.state.moveKruzof= false
        // app.tweenOpacity(app.skinGroup,0,document.body)
         //app.tweenOpacity(app.orca,1,document.body)
         //app.tweenPosition(app.skinGroup,{x:app.skinGroup.position.x,y:app.skinGroup.position.y,z:-1.5 - app.end.transform.zSkin},document.getElementsByTagName('DIV')[0])
         //app.tweenPosition(app.orca,{x:app.orca.position.x,y:app.orca.position.y,z:-app.end.transform.zBones},document.getElementsByTagName('DIV')[1])
+        Velocity(
+          popper,
+          { opacity: 0, scale: 0.9 },
+          {
+            easing: [0.6, -0.58, 0.735, 0.045],
+            duration: 350,
+            complete: function(elements) {
+              popper.style.visibility='hidden'
+            }
+          }
+        );
+      }
+      leftBtn.onclick=function(){
+        
         Velocity(
           popper,
           { opacity: 0, scale: 0.9 },
@@ -587,12 +663,41 @@ export default {
       var scope = this;
       app.endGame()
       app.state.endGame = true
+      app.state.moveKruzof = true
+      app.state.view = 'skin'
+       if(app.state.boneMarkers == true){
+          this.boneMarkers()
+        }
+      // Remove Bone Drag Listeners
+      document.removeEventListener("mousemove", app.dragListener);
+      document.removeEventListener("touchmove", app.dragListener);
+      app.boneMapDragListen =false
+      app.dragControls.removeEventListener("dragstart");
+      app.dragControls.removeEventListener("dragend");
+      app.dragControls.enabled = false;
+      app.dragControls.deactivate();
+      app.dragControls=null
+
       setTimeout(() => {
         scope.popper(
           null,
           scope.tutorials.stepFinish.position,
           null
         )
+        var skinBtn=document.getElementsByClassName('skinBtn')[0]
+        skinBtn.style.visibility='visible'
+        //skinBtn.style.transform="scale(.8)"
+        Velocity(
+          skinBtn,
+          { opacity: 1, scale: [1, 0.8] },
+          {
+            easing: [0.175, 0.885, 0.32, 1.875],
+            duration: 650,
+            complete: function(elements) {
+              
+            }
+          }
+        );
       }, 6000);
     },
     // Tween Opacity
@@ -601,6 +706,7 @@ export default {
       var scope = this;
      
       console.log(scope.bonesLeft, "bonesleft", domElement);
+      console.log('BONEOPACITY',object,opacity)
 
       var target = boneOrigin;
       //boneOrigin.material=target.material.clone()
@@ -732,67 +838,158 @@ export default {
         }
       );
     },
+    boneActiveAlert(event){
+      event.preventDefault();
+      var target=event.target
+      var boneName = event.target
+        .getAttribute("data-bone")
+        .replace(" ", "_");
+      var puzzleBoneName = "puzzle" + boneName
+      var bone = app[puzzleBoneName]
+      var boneAlert = document.getElementById("boneActiveAlert")
+      Velocity(boneAlert,"finish")
+      Velocity(
+        boneAlert,
+        { opacity: 1, scale: [1, 0.9] },
+        { easing: [0.175, 0.885, 0.32, 1.575], duration: 350 }
+      );
+      Velocity(
+        boneAlert,
+        { opacity: 0, scale: 0.9 },
+        {easing: [0.6, -0.58, 0.735, 0.045],delay:1000, duration: 350 }
+      );
+
+      var startingX = bone.scale.x;
+        var startingY = bone.scale.y;
+        var startingZ = bone.scale.z;
+        var deltaX = 1.3 - startingX;
+        var deltaY = 1.3 - startingY;
+        var deltaZ = 1.3 - startingZ;
+        var canvas = document.getElementById("example");
+        // console.log(canvas, boneVector,vector,deltaZ,boneVector.z,'canvas')
+        Velocity(
+          target,
+          {
+            tween: [1, 0]
+          },
+          {
+            duration: 300,
+            easing: [150, 17],
+            progress: function(
+              elements,
+              complete,
+              remaining,
+              current,
+              tweenValue
+            ) {
+              // console.log(bone.scale, "scale");
+              bone.scale.x = startingX + deltaX * tweenValue;
+              bone.scale.y = startingY + deltaY * tweenValue;
+              bone.scale.z = startingZ + deltaZ * tweenValue;
+            },complete: function(){
+              Velocity(
+               target,
+                {
+                  tween: [1, 0]
+                },
+                {
+                  duration: 300,
+                  easing: [150, 17],
+                  progress: function(
+                    elements,
+                    complete,
+                    remaining,
+                    current,
+                    tweenValue
+                  ) {
+                    // console.log(bone.scale, "scale");
+                    bone.scale.x = 1.3 - .3 * tweenValue;
+                    bone.scale.y = 1.3 - .3 * tweenValue;
+                    bone.scale.z = 1.3 - .3 * tweenValue;
+                  }
+                }
+              );
+            }
+          }
+        );
+        
+    },
     boneMouseDown(el) {
+      el.preventDefault();
       app.addBoneEvent = this.addBoneEvent;
-      console.log("bonedown");
+      console.log("bonedown",el);
+      
       app.boneGrabbed = true;
       app.selectedBone = el.target;
       var boneDrag = document.getElementById("boneDrag");
-
-      // Bone Map Image Drag Function
-      app.dragListener = function(e) {
-        // console.log(app.selectedBone.clientWidth,boneDrag.style.width,'drag',event.changedTouches)
-
-        //console.log(e.pageX,e.pageY,event.changedTouches)
-        var x, y;
-        event.changedTouches
-          ? (x = event.changedTouches[0].screenX)
-          : (x = e.pageX);
-        event.changedTouches
-          ? (y = event.changedTouches[0].screenY)
-          : (y = e.pageY);
-        boneDrag.style.left = x + 20 - boneDrag.clientWidth / 2 + "px";
-        boneDrag.style.top = y - boneDrag.clientHeight / 2 + "px";
-      };
-      var boneDrag = document.getElementById("boneDrag");
-      var boneDragImg = document.getElementById("boneDragImg");
       var boneName = app.selectedBone
         .getAttribute("data-bone")
         .replace(" ", "_");
+        event.boneName=boneName
+      var boneDrag = document.getElementById(boneName+"boneDrag");
+      var boneDragImg = document.getElementById(boneName+"boneDragImg");
+      var touchIndex = app.currentTouches.findIndex(p => p.object == boneDrag)
+      console.log(touchIndex,boneDrag.id,app.currentTouches,"YOOOOOOOOO")
+      // Check if already attached to touch
+      if (touchIndex == -1){
+    
+        var boneImageEl = app.selectedBone.getElementsByTagName("img")[0];
+        boneDragImg.src = boneImageEl.src;
+        console.log(
+          app.selectedBone.getElementsByTagName("img")[0].classList,
+          "width"
+        );
+        boneImageEl.classList.contains("half")
+          ? (boneDrag.style.width =
+              app.selectedBone.getBoundingClientRect().width + "px")
+          : (boneDrag.style.width = boneImageEl.width + "px");
+        boneImageEl.classList.contains("half")
+          ? (boneDrag.style.height = app.selectedBone.getBoundingClientRect().height)
+          : (boneDrag.style.height = boneImageEl.height + "px");
+        //boneDrag.style.width=app.selectedBone.getElementsByTagName('img')[0].getBoundingClientRect().width+'px'
+        //boneDrag.style.height=app.selectedBone.getElementsByTagName('img')[0].getBoundingClientRect().height+'px'
+  
+        //Velocity( app.selectedBone.querySelectorAll("img"), { opacity:0 }, { duration: 100 })
+        //Velocity( app.selectedBone.querySelectorAll(".bone-mask"), { opacity:1 }, { duration: 100 }) ;
+        var touches = event.changedTouches;
+        if (!touches){
+          var x,y
+          x = e.pageX;
+          y = e.pageY
+          boneDrag.style.left = x + 20 - boneDrag.clientWidth / 2 + "px";
+          boneDrag.style.top = y - boneDrag.clientHeight / 2 + "px";
+        }
+        for (var i=0; i < touches.length; i++) {
+            var touch = touches[i];
 
-      var boneImageEl = app.selectedBone.getElementsByTagName("img")[0];
-      boneDragImg.src = boneImageEl.src;
-      console.log(
-        app.selectedBone.getElementsByTagName("img")[0].classList,
-        "width"
-      );
-      boneImageEl.classList.contains("half")
-        ? (boneDrag.style.width =
-            app.selectedBone.getBoundingClientRect().width + "px")
-        : (boneDrag.style.width = boneImageEl.width + "px");
-      boneImageEl.classList.contains("half")
-        ? (boneDrag.style.height = app.selectedBone.getBoundingClientRect().height)
-        : (boneDrag.style.height = boneImageEl.height + "px");
-      //boneDrag.style.width=app.selectedBone.getElementsByTagName('img')[0].getBoundingClientRect().width+'px'
-      //boneDrag.style.height=app.selectedBone.getElementsByTagName('img')[0].getBoundingClientRect().height+'px'
-      var x, y;
-      event.changedTouches
-        ? (x = event.changedTouches[0].screenX)
-        : (x = event.pageX);
-      event.changedTouches
-        ? (y = event.changedTouches[0].screenY)
-        : (y = event.pageY);
-      boneDrag.style.left = x + 20 - boneDrag.clientWidth / 2 + "px";
-      boneDrag.style.top = y - boneDrag.clientHeight / 2 + "px";
-      //Velocity( app.selectedBone.querySelectorAll("img"), { opacity:0 }, { duration: 100 })
-      //Velocity( app.selectedBone.querySelectorAll(".bone-mask"), { opacity:1 }, { duration: 100 }) ;
-      Velocity(
-        boneDrag,
-        { opacity: 1, scale: 1.35 },
-        { easing: [200, 15], duration: 400 }
-      );
-      document.addEventListener("mousemove", app.dragListener);
-      document.addEventListener("touchmove", app.dragListener);
+
+            app.currentTouches.push({
+                id: touch.identifier,
+                pageX: touch.pageX,
+                pageY: touch.pageY,
+                object: boneDrag,
+                boneDiv: touch.target,
+                isBoneMap:true
+            });
+            boneDrag.style.left = touch.pageX + 20 - boneDrag.clientWidth / 2 + "px";
+            boneDrag.style.top = touch.pageY - boneDrag.clientHeight / 2 + "px";
+
+
+        }
+        
+        Velocity(
+          boneDrag,
+          { opacity: 1, scale: 1.35 },
+          { easing: [200, 15], duration: 400 }
+        );
+        if (app.boneMapDragListen != true){
+          console.log("ADDDBONE DRAG")
+          document.addEventListener("mousemove", app.dragListener);
+          document.addEventListener("touchmove", app.dragListener);
+          app.boneMapDragListen=true
+        }
+      }
+     
     },
     addBoneEvent(boneDiv, x, y) {
       var scope = this;
@@ -835,8 +1032,9 @@ export default {
       );
       puzzleBone.name = "puzzle" + app.orca.getObjectByName(bone).name;
       puzzleBone.arrayName = boneDiv.getAttribute("data-bone");
-      app[puzzleBone.name] = {};
+      app[puzzleBone.name] = puzzleBone
       puzzleBone.originBone = boneOrigin;
+      puzzleBone.boneMask=activeBoneMask
       //mesh.position.set( i * 100, 0, 0 );
       //scene.add( mesh );
       //var puzzleBone=app.orca.getObjectByName(bone).clone()
@@ -932,7 +1130,9 @@ export default {
           deltaY,
           deltaZ
         );
-         _intersection.x=0
+         //_intersection.x=0
+         _intersection.x < -7 ? _intersection.x =-10 :null
+        _intersection.x > 7  ? _intersection.x =7 :null
         _intersection.z < -10 ? _intersection.z =-10 :null
         _intersection.z > 7  ? _intersection.z =7 :null
         _intersection.y < -7 ? _intersection.y =-7 :null
@@ -941,7 +1141,7 @@ export default {
         puzzleBone.position.copy(_intersection);
         console.log('boneplace')
         puzzleBone.scale.set(0.8, 0.8, 0.8);
-        tweenBoneSize(puzzleBone, 1, document.body);
+        tweenBoneSize(puzzleBone, 1, app[puzzleBone.name].boneMask);
 
         boneOrigin.geometry.computeBoundingBox();
         var boundingBox = boneOrigin.geometry.boundingBox;
@@ -962,11 +1162,13 @@ export default {
         console.log(position, start, "evennnn", distance, place);
         if (distance < 0.8 && place == true) {
           place = false;
+          app[puzzleBone.name].boneAssembledOnDrop=true
+          //app.dragControls ? app.dragControls.removeObject(app[puzzleBone.name]) : {}
           // console.log("NICCCCCCCCC",position)
           //app.dragControls ? app.dragControls.enabled=false : null
 
-          tweenBone(start, puzzleBone, position, document.body);
-          scope.tweenOpacity(puzzleBone, 0, document.body);
+          tweenBone(start, puzzleBone, position, app[puzzleBone.name].boneMask);
+          scope.tweenOpacity(puzzleBone, 0, app[puzzleBone.name].boneMask);
           //activeBoneMask.classList.add("disabled");
 
           removeDragControls = true;
@@ -1001,6 +1203,7 @@ export default {
         { opacity: 1 },
         { duration: 100 }
       );
+      /*
       Velocity(
         info,
         { translateY: [-10, 0], opacity: 0 },
@@ -1021,13 +1224,14 @@ export default {
           duration: 300,
           easing: "easeOutBack"
         }
-      );
+      );*/
 
       // Animate Bone
 
       var scope = this;
       function tweenBone(vector, marker, boneVector, domElement) {
         //app[marker.name].dragControls.enabled=false
+        var boneOrigin=marker.originBone
         var startingX = boneVector.x;
         var startingY = boneVector.y;
         var startingZ = boneVector.z;
@@ -1057,6 +1261,7 @@ export default {
               marker.position.z = startingZ + deltaZ * tweenValue;
             },
             complete: function(elements) {
+              var activeBoneMask=marker.boneMask
               Velocity(
                 activeBoneMask.querySelectorAll(".bone-mask"),
                 { backgroundColor: "#000000", opacity: 0.3 },
@@ -1138,48 +1343,13 @@ export default {
 
       var boundingBox = boneOrigin.geometry.boundingBox;
 
-      var start = new THREE.Vector3();
-      start.subVectors(boundingBox.max, boundingBox.min);
-      start.multiplyScalar(0.5);
-      start.add(boundingBox.min);
+      app[puzzleBone.name].start = new THREE.Vector3();
+      app[puzzleBone.name].start.subVectors(boundingBox.max, boundingBox.min);
+      app[puzzleBone.name].start.multiplyScalar(0.5);
+      app[puzzleBone.name].start.add(boundingBox.min);
 
-      start.applyMatrix4(boneOrigin.matrixWorld);
-      function dragFunction(event) {
-       
-        var boundingBox = activeDragObj.geometry.boundingBox;
-
-        var position = new THREE.Vector3();
-        //position.subVectors(boundingBox.max, boundingBox.min);
-        // position.multiplyScalar(0.5);
-        //position.add(boundingBox.min);
-
-        //position.applyMatrix4(activeDragObj.matrixWorld);
-        position = activeDragObj.position;
-        //var start = new THREE.Vector3()
-        //app.scene.updateMatrixWorld();
-        //app.orca.getObjectByName(bone).getWorldPosition(start)
-        //start.setFromMatrixPosition( app.orca.getObjectByName(bone).matrixWorld );
-        // console.log(start,'start',position,)
-        var distance = start.distanceTo(position);
-        // console.log(position,start, 'evennnn',distance)
-        if (distance < 0.8 && place == true) {
-          place = false;
-          // console.log("NICCCCCCCCC",position)
-          app[puzzleBone.name].dragControls.enabled = false;
-          //app.dragControls.dispose()
-          //app.dragControls.removeEventListener('dragstart');
-          //app.dragControls=null
-          //app.dragControls
-          //console.log(app[puzzleBone.name],puzzleBone.name,'ourcontrols')
-
-          tweenBone(start, puzzleBone, position, document.body);
-          scope.tweenOpacity(puzzleBone, 0, document.body);
-          //activeBoneMask.classList.add("disabled");
-
-          removeDragControls = true;
-        }
-        reportPos = requestAnimationFrame(dragFunction);
-      }
+      app[puzzleBone.name].start.applyMatrix4(boneOrigin.matrixWorld);
+    
       var objects = [];
       // var puzzleGroup= new THREE.Group()
       // app.scene.add(puzzleGroup)
@@ -1187,35 +1357,95 @@ export default {
       objects.push(puzzleBone);
       activeDragObj = puzzleBone;
       // dragFunction(event)
-      if (removeDragControls == false) {
+      if (!app.dragControls) {
         console.log("createControls");
-        app[puzzleBone.name].dragControls = new THREE.DragControls(
+        app[puzzleBone.name].reportPos=''
+        app.dragControls = new THREE.DragControls(
           objects,
           app.camera,
           app.renderer.domElement
         );
-        app[puzzleBone.name].dragControls.addEventListener(
-          "dragstart",
+        app.dragControls.addEventListener(
+          "drag",
+         // app[puzzleBone.name].dragFunction(event)
+          
           function(event) {
-            dragFunction(event);
-            app.controls.enabled = false;
+            
+            //console.log('puzzleDrag',event.object)
+             var activeDragObj=event.object
+             var bone = bone
+             var puzzleBone=event.object
+              console.log('Dragging',event.object)
+              var boundingBox = activeDragObj.geometry.boundingBox;
+
+              var position = new THREE.Vector3();
+              //position.subVectors(boundingBox.max, boundingBox.min);
+              // position.multiplyScalar(0.5);
+              //position.add(boundingBox.min);
+
+              //position.applyMatrix4(activeDragObj.matrixWorld);
+              position = activeDragObj.position;
+              //var start = new THREE.Vector3()
+              //app.scene.updateMatrixWorld();
+              //app.orca.getObjectByName(bone).getWorldPosition(start)
+              //start.setFromMatrixPosition( app.orca.getObjectByName(bone).matrixWorld );
+              // console.log(start,'start',position,)
+              var distance = app[event.object.name].start.distanceTo(position);
+              // console.log(position,start, 'evennnn',distance)
+              if (distance < 0.8 && app[event.object.name].boneAssembledOnDrop!=true) {
+                place = false;
+                // console.log("NICCCCCCCCC",position)
+                //app.dragControls.enabled = false;
+                 app.dragControls.removeObject(event.object)
+                //app.dragControls.dispose()
+                //app.dragControls.removeEventListener('dragstart');
+                //app.dragControls=null
+                //app.dragControls
+                //console.log(app[puzzleBone.name],puzzleBone.name,'ourcontrols')
+                console.log(app[event.object.name].start,'START',event.object)
+                app[puzzleBone.name].boneMask
+                tweenBone(app[event.object.name].start, app[event.object.name], position, app[event.object.name].boneMask);
+                scope.tweenOpacity(app[event.object.name], 0, app[event.object.name].boneMask);
+                //activeBoneMask.classList.add("disabled");
+
+                removeDragControls = true;
+              }else{
+                //app[event.object.name].reportPos = requestAnimationFrame(dragFunction.bind(null,activeDragObj));
+              app.controls.enabled = false;
+              }
+              if(app[event.object.name].boneAssembledOnDrop==true){
+                app.dragControls.removeObject(event.object)
+                //app[event.object.name].reportPos = requestAnimationFrame(dragFunction.bind(null,activeDragObj));
+              }
+              
+          
+    
           }
         );
-        app[puzzleBone.name].dragControls.addEventListener("dragend", function(
+        app.dragControls.addEventListener("dragend", function(
           event
         ) {
-          cancelAnimationFrame(reportPos);
-          app.controls.enabled = true;
+          console.log('CANCELANIMATIONREWUIES',event.object)
+          cancelAnimationFrame(app[event.object.name].reportPos);
+          //app.controls.enabled = true;
           if (removeDragControls == true) {
+            //app.dragControls.removeObject(event.object)
+            place=true
+            removeDragControls = false
+            /*
             console.log(this, "thecontrols");
             this.removeEventListener("dragstart");
             this.removeEventListener("dragend");
             this.enabled = false;
             this.deactivate();
-            removeDragControls = false;
+            removeDragControls = false;*/
           }
         });
-        console.log(app[puzzleBone.name].dragControls);
+       // console.log(app[puzzleBone.name].dragControls);
+      }else{
+        
+         app[puzzleBone.name].boneAssembledOnDrop !=true ? app.dragControls.addObject(objects[0]) : {}
+
       }
     },
     addBone(el) {
@@ -1356,6 +1586,7 @@ export default {
   font-family: Sofia;
   margin-top: 1rem;
   color:white;
+  user-select: none;
 }
 </style>
 <style scoped>
@@ -1372,10 +1603,36 @@ export default {
   top: 30%;
   position: absolute;
 }
+#boneActiveAlert{
+  font-family: Sofia;
+  font-weight:500;
+  color:white;
+  z-index:7;
+  pointer-events:none;
+  font-size:1rem;
+  position:absolute;
+  padding:8px 12px;
+  background:#1b9dff;
+  border-radius:10px;
+  line-height:1.2;
+  opacity:0;
+  bottom:210px
+  
+}
 #canvas{
 
 }
+.skinBtn{
 
+}
+.skinBtn{
+ opacity:0;
+ visibility:hidden;
+ background:url('/static/images/kruzof/skinBtn.svg');
+ background-size:85%;
+ background-repeat:no-repeat;
+ background-position:center;
+}
 .tippy-tooltip.kruzof-theme {
   /* Your styling here. Example: */
   background-color: white;
@@ -1418,7 +1675,7 @@ export default {
 #steprestart {
   right: 50px;
   left: initial;
-  top: 140px;
+  top: 150px;
   bottom: initial;
 }
 .blueback{
@@ -1447,25 +1704,27 @@ body {
 
 .top-nav {
   background: none;
-  display: flex;
-  height: 140px;
+  display: block;
+
+  height:0px;
   align-content: center;
 }
 .top-nav ul {
-  display: flex;
+  
   padding-left: 10px;
-  width: 100%;
+  display:inline-block;
   padding-right: 40px;
 }
 .top-nav li {
   width: 70px;
   height: 70px;
   border-radius: 50%;
-  background: #026bbd;
+  background-color: #026bbd;
   align-self: center;
   display: flex;
   justify-content: center;
-  margin: 0 20px;
+  margin: 0px 20px;
+
 }
 
 .top-nav li a {
@@ -1484,8 +1743,11 @@ body {
   line-height: 1;
 }
 ul.right-nav {
-  margin-left: auto;
-  justify-content: flex-end;
+  display:flex;
+  position:absolute;
+  top:35px;
+  right:0px;
+
 }
 .top-nav li.reset a {
   font-size: 2.2rem;
@@ -1510,11 +1772,12 @@ ul.right-nav {
 .top-nav li.home-btn{
   width: 100px;
   height: 100px;
-  margin-top:10px
+  margin-top:30px
 }
 .home-btn i{
   font-size: 3.2rem;
 }
+
 .boneMarkers a{
   background:url('/static/images/kruzof/boneID.svg');
   height:100%;
@@ -1537,7 +1800,7 @@ ul.right-nav {
   position: absolute;
   width: 40%;
   z-index: 5;
-  transition: all 2s ease-in-out;
+  transition: all 1s ease-in-out;
   clip-path: inset(0% 100% 0 0%);
 }
 .load-bones-back {
@@ -1669,7 +1932,7 @@ ul.right-nav {
   top: 0;
   z-index: 200;
 }
-#boneDrag {
+#boneDrag,.boneDrag {
   position: absolute;
   top: 0;
   left: 40px;
@@ -1681,7 +1944,7 @@ ul.right-nav {
   pointer-events: none;
   opacity: 0;
 }
-#boneDrag img {
+#boneDrag img, .boneDrag img {
   width: 100%;
   height: auto;
   display: inline;

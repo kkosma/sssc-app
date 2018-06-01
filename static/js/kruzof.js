@@ -432,6 +432,7 @@ var OBJLoader2Example = (function () {
                 }
               }else{
                 object.children[i].material.depthWrite = true
+                object.children[i].material.transparent=true
                 object.children[i].material.opacity = initial + deltaO * tweenValue;
               }
 
@@ -524,10 +525,10 @@ var OBJLoader2Example = (function () {
     //this.controls.zoomDampingFactor = 0.2;
     this.controls.panDampingFactor = 0.2;
     this.controls.panSpeed = .3
-    this.controls.zoomSpeed = .25
+    this.controls.zoomSpeed = .225
     this.controls.maxDistance = 50
 
-    this.zoomDampingFactor = 0.1;
+    //this.controls.zoomDampingFactor = 0.075;
     this.controls.enabled=false
     this.materialCameraPosition = this.camera.position.clone();
     this.materialCameraPosition.z += 10;
@@ -794,7 +795,7 @@ var OBJLoader2Example = (function () {
       ctx.lineWidth = 40;
       ctx.strokeStyle = '#ffffff';
       ctx.stroke();
-      ctx.fillStyle = 'rgba(41,171,226,.25)';
+      ctx.fillStyle = 'rgba(27,157,255,.25)';
       ctx.fill();
 
       return canvas;
@@ -813,8 +814,8 @@ var OBJLoader2Example = (function () {
     var materialB = new THREE.SpriteMaterial({ map: texture, color: 0xffffff, fog: true, depthTest: true, transparent: true });
     var coordinate = {
       'Skull': { x: 3, y: .91, z: 2.6 },
-      'Stylohyoid': { x: 0, y: -3.25, z: 4.25 },
-      'Basihyoid': { x: 0, y: -4.5, z: 4.25 },
+      'Stylohyoid': { x: 0, y: -3.25, z: 4 },
+      'Basihyoid': { x: 0, y: -4.5, z: 4 },
       'Cervical Vertebrae': { x: 0, y: 2, z: -.5 },
       'Thoracic Vertebrae': { x: 0, y: 2, z: -4 },
       'Sternum': { x: 0, y: -7, z: -1.5 },
@@ -822,14 +823,14 @@ var OBJLoader2Example = (function () {
       'Ribs': { x: 0, y: -4.5, z: -9 },
       'Lumbar Vertebrae': { x: 0, y: .3, z: -14 },
       'Caudal Vertebrae': { x: 0, y: -6, z: -24 },
-      'Pelvis': { x: 0, y: -6, z: -17 },
-      'Chevrons': { x: 0, y: -11, z: -24 },
+      'Pelvis': { x: 0, y: -6, z: -18 },
+      'Chevrons': { x: 0, y: -10, z: -24 },
       'Scapula': { x: 4.6, y: -4, z: -3 },
-      'Humerus': { x: 4.5, y: -7, z: -2.5 },
-      'Radius': { x: 4.5, y: -8.5, z: -2 },
-      'Ulna': { x: 4.7, y: -7.6, z: -3.5 },
-      'Metacarpal': { x: 5.7, y: -9.6, z: -3.5 },
-      'Digits': { x: 6.7, y: -10.6, z: -5.5 }
+      'Humerus': { x: 4.5, y: -6, z: -2.5 },
+      'Radius': { x: 4.8, y: -8.5, z: -2 },
+      'Ulna': { x: 5.4, y: -7.6, z: -3.5 },
+      'Metacarpal': { x: 6.3, y: -9, z: -3.5 },
+      'Digits': { x: 6.7, y: -10, z: -5.25 }
     }
     for (var key in coordinate) {
       var coordinates = coordinate[key]
@@ -862,10 +863,11 @@ var OBJLoader2Example = (function () {
     
     this.boneMarkers.renderOrder = 3
     this.boneMarkers.position.z = this.boneMarkers.position.z + .25
-    this.boneMarkers.rotation.x = 10 * (Math.PI /180)
+    this.boneMarkers.rotation.x = 10.5 * (Math.PI /180)
     //this.boneMarkers.opacity=0
     this.state.boneMarkers=false
     document.getElementById('canvas').addEventListener('mousedown', onDocumentMouseDown, false);
+    document.getElementById('canvas').addEventListener('touchstart', onDocumentMouseDown, false);
     document.getElementById('canvas').addEventListener('mouseup', onDocumentMouseUp, false);
     document.getElementById('canvas').addEventListener('touchend', onDocumentTouchEnd, false);
     //this.scene.add( helper );
@@ -914,14 +916,28 @@ var OBJLoader2Example = (function () {
       var timeOut=1300
       //var timeOut=20
       setTimeout(() => {
-        tweenOpacity(scope.orca, .15, document.body)
-        document.getElementsByClassName('loader')[0].classList.add('fade')
+        
+        var loader=document.getElementsByClassName('loader')[0]
+        Velocity(
+          loader,
+          { opacity: 0 },
+          {
+            easing: [0.6, -0.58, 0.735, 0.045],
+            duration: 350,
+            complete: function (elements) {
+              tweenOpacity(scope.orca, .15, document.body)
+              loader.style.visibility = 'hidden'
+
+
+            }
+          }
+        );
         //moveCamera(new THREE.Euler(18, 3, 1, 'XYZ'), 120)
         var targetPosition = new THREE.Vector3(18, 3, 1);
         //var targetPosition = new THREE.Vector3(26, 0, 8);
         var duration = 40;
         //var bonemapDelay=3000
-        var bonemapDelay = 30
+        var bonemapDelay = 3200
 
         tweenCamera(targetPosition, 4000);
         Velocity(document.getElementById('bonemap'), { translateY: '400px' }, {
@@ -1180,16 +1196,32 @@ var OBJLoader2Example = (function () {
         });
       
     }
-    this.resetGame =function(){
+    this.resetGame =function(resetBones,state,moveKruzof){
       //app.state.endGame = false
       var targetPosition = new THREE.Vector3(18, 3, 1);
       var duration = 3000
-      tweenCamera(targetPosition, duration, false);
+      
+      moveKruzof == true ? tweenCamera(targetPosition, duration, false): {}
       Velocity(document.getElementById('bonemap'), { translateY: '400px' }, {
         duration: 1200, easing: [0.6, -0.18, 0.735, 0.045], complete: function (elements) { }
       })
-      app.tweenOpacity(app.skinGroup, 0, document.getElementsByTagName('DIV')[0])
-      app.tweenOpacity(app.orca, 1, document.getElementsByTagName('DIV')[0])
+      var boneOpacity,skinOpacity
+      if (state == 'bones'){
+        skinOpacity = 0
+        boneOpacity = 1
+      }else{
+        skinOpacity = 1
+        boneOpacity = 0
+      }
+
+      // Opacity animation order by state
+      if(state == 'bones'){
+        app.tweenOpacity(app.skinGroup, skinOpacity, document.getElementsByTagName('DIV')[0])
+        resetBones == true ? app.tweenOpacity(app.orca, boneOpacity, document.getElementsByTagName('DIV')[0]) : {}
+      }else{
+        resetBones == true ? app.tweenOpacity(app.orca, boneOpacity, document.getElementsByTagName('DIV')[0]) : {}
+        app.tweenOpacity(app.skinGroup, skinOpacity, document.getElementsByTagName('DIV')[0])
+      }
 
       // Reset Lights
     
@@ -1205,6 +1237,7 @@ var OBJLoader2Example = (function () {
         initialRot = app.orca.rotation.x
         var deltaX, deltaY, deltaZ, deltaBones, deltaBonesZ
         deltaX = 0 - initialX
+
         deltaY = (app.skinGroup.position.y+app.end.transform.y) - initialY
         deltaZ = (app.skinGroup.position.z - app.end.transform.zSkin + -1.5)   - initialZ
         deltaBones = (app.orca.position.y + app.end.transform.y*2 ) - initialBones
@@ -1226,31 +1259,53 @@ var OBJLoader2Example = (function () {
               current,
               tweenValue
             ) {
+              if(moveKruzof == true){
               //console.log('settingux')
-              app.skinGroup.position.setY(initialY + deltaY * tweenValue);
-              app.skinGroup.position.setZ(initialZ + deltaZ * tweenValue);
-              app.orca.position.setY(initialBones + deltaBones * tweenValue);
-              app.orca.position.setZ(initialBonesZ + deltaBonesZ * tweenValue);
-              app.skinLightBottom.intensity = initialBottomIntensity + .6 * tweenValue;
-              app.skinLightBack.intensity = 1 - .8 * tweenValue;
-
+                app.skinGroup.position.setY(initialY + deltaY * tweenValue);
+                app.skinGroup.position.setZ(initialZ + deltaZ * tweenValue);
+                app.orca.position.setY(initialBones + deltaBones * tweenValue);
+                app.orca.position.setZ(initialBonesZ + deltaBonesZ * tweenValue);
+              }
+              if (state == 'skin') {
+                app.skinLightBottom.intensity = initialBottomIntensity - .6 * tweenValue;
+                app.skinLightBack.intensity = .2 + 1 * tweenValue;
+              }else{
+                app.skinLightBottom.intensity = initialBottomIntensity + .6 * tweenValue;
+                app.skinLightBack.intensity = 1 - .8 * tweenValue;
+              }
 
             },
             complete: function (elements) {
-              scope.camera.add(app.skinLightBottom)
-              scope.camera.add(app.skinLightTop)
-              scope.scene.remove(app.skinLightBottom)
-              scope.scene.remove(app.skinLightTop)
-              for (var i = 0; i < app.actions.length; ++i) {
-                //app.actions[i].play()
-                app.actions[i].stop()
-                app.actions[i].play()
-                app.actions[i].paused = true
+              if (state == 'bones') {
+                scope.camera.add(app.skinLightBottom)
+                scope.camera.add(app.skinLightTop)
+                scope.scene.remove(app.skinLightBottom)
+                scope.scene.remove(app.skinLightTop)
+                for (var i = 0; i < app.actions.length; ++i) {
+                  //app.actions[i].play()
+                  app.actions[i].stop()
+                  app.actions[i].play()
+                  app.actions[i].paused = true
 
+                }
+              }else{
+                scope.camera.remove(app.skinLightBottom)
+                scope.camera.remove(app.skinLightTop)
+                scope.scene.add(app.skinLightBottom)
+                scope.scene.add(app.skinLightTop)
+                for (var i = 0; i < app.actions.length; ++i) {
+                  //app.actions[i].play()
+                  app.actions[i].stop()
+                  app.actions[i].play()
+                  app.actions[i].paused = false
+
+                }
               }
+
             }
           });
-      }
+        }
+        
       tweenSkinPos()
 
     }
@@ -1389,6 +1444,11 @@ var OBJLoader2Example = (function () {
               if (scope.orca.children[i].material){
 
               }
+              if (!scope.orca.children[i].material) {
+                // Skip boneMarker Sprites
+                continue
+              }
+              
               
               //console.log(mesh, 'mesherer')
               if(scope.orca.children[i].material){
@@ -1404,6 +1464,7 @@ var OBJLoader2Example = (function () {
               
             }
             for (var i = 0; i < scope.skinGroup.children.length; ++i) {
+              
               for (var e = 0; e < scope.skinGroup.children[i].material.length; ++e) {
                 //console.log(mesh, 'mesherer')
                 scope.skinGroup.children[i].material[e].depthWrite=true
@@ -1536,6 +1597,57 @@ var OBJLoader2Example = (function () {
 
 var app = new OBJLoader2Example(document.getElementById('example'));
 
+// Touch Tracking //////////////////////////////////////////////////////////////
+/////////
+// Finds the array index of a touch in the app.currentTouches array.
+app.currentTouches = new Array
+app.findCurrentTouchIndex
+app.findCurrentTouchIndex = function (id) {
+  for (var i = 0; i < app.currentTouches.length; i++) {
+    if (app.currentTouches[i].id === id) {
+      return i;
+    }
+  }
+  // Touch not found! Return -1.
+  return -1;
+};
+
+// Bone Map Image Drag Function
+app.dragListener = function (e) {
+  console.log('APP DRAGGIND')
+  // console.log(app.selectedBone.clientWidth,boneDrag.style.width,'drag',event.changedTouches)
+  var touches = event.changedTouches;
+  /*
+  if (!touches) {
+    var x, y
+    x = e.pageX;
+    y = e.pageY
+    boneDrag.style.left = x + 20 - boneDrag.clientWidth / 2 + "px";
+    boneDrag.style.top = y - boneDrag.clientHeight / 2 + "px";
+  }/*/
+
+  for (var i = 0; i < touches.length; i++) {
+    var touch = touches[i];
+    console.log('DRAGBONEMAP', touch)
+    var currentTouchIndex = app.findCurrentTouchIndex(touch.identifier);
+
+    if (currentTouchIndex >= 0 && app.currentTouches[currentTouchIndex].isBoneMap) {
+      console.log(e.pageX, e.pageY, event.changedTouches)
+      var currentTouch = app.currentTouches[currentTouchIndex];
+      var boneDrag = currentTouch.object
+      boneDrag.style.left = touch.pageX + 20 - boneDrag.clientWidth / 2 + "px";
+      boneDrag.style.top = touch.pageY - boneDrag.clientHeight / 2 + "px";
+
+      currentTouch.pageX = touch.pageX;
+      currentTouch.pageY = touch.pageY;
+
+      // Store the record.
+      app.currentTouches.splice(currentTouchIndex, 1, currentTouch);
+    }
+
+  }
+
+};
 
 
 var resizeWindow = function () {
@@ -1551,32 +1663,57 @@ var render = function () {
   requestAnimationFrame(render);
   app.render();
 };
-var activeMarker
-function onDocumentTouchEnd(event) {
-  event.preventDefault();
-  document.removeEventListener('touchmove', app.dragListener)
-  Velocity(document.getElementById('boneDrag'), { opacity: 0, scale:1}, { duration: 300 })
-  event = event.changedTouches[0]
+var activeMarker,activeBoneHighlight
 
-  var _domElement = app.renderer.domElement
-  var rect = _domElement.getBoundingClientRect();
-  var _mouse = {}
-  _mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-  _mouse.y = - ((event.clientY - rect.top) / rect.height) * 2 + 1;
-  console.log(app, 'moueup', _mouse.x, _mouse.y)
-  var y
-  event.changedTouches ? y = event.changedTouches[0].screenY : y = event.pageY
-  if (app.boneGrabbed == true && y < (window.innerHeight - 300)) {
-    console.log('itstrue', window)
-    app.boneGrabbed = false
-    app.addBoneEvent(app.selectedBone, _mouse.x, _mouse.y)
-  }else{
-    app.boneGrabbed = false
+function onDocumentTouchEnd(event) {
+
+  event.preventDefault();
+  console.log(event.changedTouches, 'UPEVENT')
+  //document.removeEventListener('touchmove', app.dragListener)
+  var touches = event.changedTouches;
+
+  for (var i = 0; i < touches.length; i++) {
+    var touch = touches[i];
+    var currentTouchIndex = app.findCurrentTouchIndex(touch.identifier);
+
+    if (currentTouchIndex >= 0) {
+      var currentTouch = app.currentTouches[currentTouchIndex];
+      if (currentTouch.isBoneMap == true){
+      Velocity(document.getElementById(event.target.dataset.bone +'boneDrag'), { opacity: 0, scale:1}, { duration: 300 })
+      }
+      event = event.changedTouches[0]
+
+      var _domElement = app.renderer.domElement
+      var rect = _domElement.getBoundingClientRect();
+      var _mouse = {}
+      _mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+      _mouse.y = - ((event.clientY - rect.top) / rect.height) * 2 + 1;
+      console.log(app, 'moueup', _mouse.x, _mouse.y)
+      var y
+      event.changedTouches ? y = event.changedTouches[0].screenY : y = event.pageY
+      if (currentTouch.isBoneMap ==true && y < (window.innerHeight - 300)) {
+        console.log('FUUUUUUUUUUUUUUUCKKKKKKK', currentTouch)
+        //app.boneGrabbed = false
+        app.addBoneEvent(currentTouch.boneDiv, _mouse.x, _mouse.y)
+      }else{
+        app.boneGrabbed = false
+      }
+      app.currentTouches.splice(currentTouchIndex, 1);
+    } else {
+      console.log('Touch was not found!');
+    }
   }
+  if (app.currentTouches.length == 0) {
+    //document.removeEventListener("mousemove", app.dragListener);
+    //document.removeEventListener("touchmove", app.dragListener);
+   
+  }
+
 }
 function onDocumentMouseUp(event) {
   event.preventDefault();
-  Velocity(document.getElementById('boneDrag'), { opacity: 0 ,scale:1}, { duration: 300 })
+  console.log(event.changedTouches,'UPEVENT')
+  Velocity(document.getElementById(event.target.dataset.bone+'boneDrag'), { opacity: 0 ,scale:1}, { duration: 300 })
   document.removeEventListener('mousemove', app.dragListener)
   var  _domElement=app.renderer.domElement
   var rect = _domElement.getBoundingClientRect();
@@ -1586,97 +1723,125 @@ function onDocumentMouseUp(event) {
   console.log(app, 'moueup',_mouse.x,_mouse.y)
   var y
   event.changedTouches ? y = event.changedTouches[0].screenY : y = event.pageY
-  if(app.boneGrabbed==true && y < (window.innerHeight - 300)){
-      console.log('itstrue',window)
+  if( y < (window.innerHeight - 300)){
+      console.log('DROPBONE',window)
     app.boneGrabbed = false
     app.addBoneEvent(app.selectedBone,_mouse.x,_mouse.y)
   }else{
     app.boneGrabbed = false
   }
 }
+
 function onDocumentMouseDown(event) {
   console.log(app,'dddd')
   event.preventDefault();
-  var intersectSprite
-  var mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-  var mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
-  var vector = new THREE.Vector3(mouseX, mouseY, 0.5);
-  app.projector.unprojectVector(vector, app.camera);
-  var raycaster = new THREE.Raycaster(app.camera.position, vector.sub(app.camera.position).normalize());
-  //var intersects = raycaster.intersectObjects(app.group.children, true);
-  var intersects=[]
-  //intersects = raycaster.intersectObjects(app.orca.children, true);
-  currentPage === 'kruzofpuzzle' ?  intersects = raycaster.intersectObjects(app.orca.children, true) : null
-
-  // Animate markers
-  function tweenMarker(x, y, z, marker, domElement) {
-    var startingX = marker.scale.x;
-    var startingY = marker.scale.y;
-    var startingZ = marker.scale.z;
-    var deltaX = x - startingX;
-    var deltaY = y - startingY;
-    var deltaZ = z - startingZ;
-    var canvas = document.getElementById('example')
-    console.log(canvas, 'canvas')
-    Velocity(domElement, {
-      tween: [1, 0]
-    }, {
-        easing: "spring", duration: 400,
-        progress: function (elements, complete, remaining, current, tweenValue) {
-          marker.scale.x = startingX + (deltaX * tweenValue);
-          marker.scale.y = startingY + (deltaY * tweenValue);
-          marker.scale.z = startingZ + (deltaZ * tweenValue);
-        }
-      });
-  }
-
-  var intersectsFound = []
-  function intersectsSprite(intersects){
-    
-    if (intersects.length > 0 ){
-      for (var i=0; i < intersects.length; ++i){
-        intersects[i].object.type == "Sprite" ? intersectSprite = intersects[i].object : null
-      }
-    }
-    //activeMarker =intersectSprite
-    if (intersectSprite != undefined) {
-      return true
+  if (app.state.boneMarkers==true){
+    var intersectSprite
+    var _domElement = app.renderer.domElement
+    var rect = _domElement.getBoundingClientRect();
+    console.log(event.changedTouches,event,'event')
+    if (event.changedTouches){
+      event = event.changedTouches[0]
+      var mouseX = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+      var mouseY = - ((event.clientY - rect.top) / rect.height) * 2 + 1;
     }else{
-      return false
+      var mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+      var mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
     }
-   
-  }
-  if (intersects.length > 0 && intersectsSprite(intersects) ) {
-    var boneName = intersects[0].object.name;
-    console.log(intersects,'intersets')
-    //tween Previous Marker
-    if (activeMarker != undefined) {
-      console.log('lastmarkertweeen')
-      tweenMarker(.4, .4, .4, activeMarker, document.getElementById('example'))
-      var lambert = new THREE.MeshLambertMaterial({ color: '#6f6f6f' })
-      if (app.orca.getObjectByName(activeMarker.name.split(' ').join('_'))) {
-       // app.orca.getObjectByName(activeMarker.name.split(' ').join('_')).material = lambert
-      }
+    console.log(mouseX,mouseY,'mouse')
+    var vector = new THREE.Vector3(mouseX, mouseY, 0.5);
+    app.projector.unprojectVector(vector, app.camera);
+    var raycaster = new THREE.Raycaster(app.camera.position, vector.sub(app.camera.position).normalize());
+    //var intersects = raycaster.intersectObjects(app.group.children, true);
+    var intersects=[]
+    //intersects = raycaster.intersectObjects(app.orca.children, true);
+    //currentPage === 'kruzofpuzzle' ?  intersects = raycaster.intersectObjects(app.orca.children, true) : null
+    intersects = raycaster.intersectObjects(app.orca.children, true)
+    console.log(intersects, 'intersects', app.orca.children)
+    // Animate markers
+    function tweenMarker(x, y, z, marker, domElement) {
+      var startingX = marker.scale.x;
+      var startingY = marker.scale.y;
+      var startingZ = marker.scale.z;
+      var deltaX = x - startingX;
+      var deltaY = y - startingY;
+      var deltaZ = z - startingZ;
+      var canvas = document.getElementById('example')
+      console.log(canvas, 'canvas')
+      Velocity(domElement, {
+        tween: [1, 0]
+      }, {
+          easing: "spring", duration: 400,
+          progress: function (elements, complete, remaining, current, tweenValue) {
+            marker.scale.x = startingX + (deltaX * tweenValue);
+            marker.scale.y = startingY + (deltaY * tweenValue);
+            marker.scale.z = startingZ + (deltaZ * tweenValue);
+          }
+        });
     }
-    if (app.orca.getObjectByName(boneName.split(' ').join('_'))) {
-     // app.orca.getObjectByName(boneName.split(' ').join('_')).material = new THREE.MeshLambertMaterial({ color: '#366b51' })
-    }
-    activeMarker = intersectSprite
-    tweenMarker(1, 1, 1, intersectSprite, document.body)
-    console.log(intersects[0].object, app.orca, 'orca');  // <======== CHANGED
-    var info = document.getElementById('boneName')
-    Velocity(info, { translateY: [-10, 0], opacity: 0 }, {
-      duration: 300, easing: 'easeOutBack',
-      complete: function (elements) {
-        console.log(info, elements, 'toooo'); info.innerHTML = intersects[0].object.name.replace('_', " ");
 
+    var intersectsFound = []
+    function intersectsSprite(intersects){
+      
+      if (intersects.length > 0 ){
+        for (var i=0; i < intersects.length; ++i){
+          intersects[i].object.type == "Sprite" ? intersectSprite = intersects[i].object : null
+          break
+        }
       }
-    })
-    Velocity(info, { translateY: [10, 0] }, { duration: 0 })
-    Velocity(info, { translateY: [0, 10], opacity: 1 }, {
-      duration: 300, easing: 'easeOutBack',
-    })
-    //document.getElementById('info').innerHTML = intersects[0].object.name;
+      //activeMarker =intersectSprite
+      if (intersectSprite != undefined) {
+        return true
+      }else{
+        return false
+      }
+    
+    }
+    if (intersects.length > 0 && intersectsSprite(intersects) ) {
+      
+      var boneName = intersects[0].object.name;
+      console.log(intersects,'intersets')
+      
+      //tween Previous Marker
+      if (app.activeMarker != undefined) {
+        console.log('lastmarkertweeen')
+        tweenMarker(.4, .4, .4, app.activeMarker, document.getElementById('example'))
+        var lambert = new THREE.MeshLambertMaterial({ color: '#6f6f6f' })
+        if (app.orca.getObjectByName(app.activeMarker.name.split(' ').join('_'))) {
+          //app.orca.getObjectByName(activeMarker.name.split(' ').join('_')).material.color=0x000000
+          console.log(app.activeBones,'activebones')
+          if (app.bonesLeft.indexOf(app.activeMarker.name.split(' ').join('_'))== -1){
+            app.orca.getObjectByName(app.activeMarker.name.split(' ').join('_')).material = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: .56, metalness: .2,normalMap:app.boneMatBump })
+          }else{
+            app.orca.getObjectByName(app.activeMarker.name.split(' ').join('_')).material = new THREE.MeshStandardMaterial({ depthWrite: false, color: '#ffffff', transparent: true, opacity: .15, blending: THREE.AdditiveBlending, roughness: .6, metalness: .2 })
+          } 
+          //app.orca.getObjectByName(app.activeMarker.name.split(' ').join('_')).material = app.activeBoneHighlight
+        }
+      }
+      if (app.orca.getObjectByName(boneName.split(' ').join('_'))) {
+        app.activeBoneHighlight = app.orca.getObjectByName(boneName.split(' ').join('_')).material
+        var newlambert = new THREE.MeshStandardMaterial({ color: '#7dff9c', emissive:"#1a331f",roughness: .5, metalness: .1 })
+        newlambert.normalMap=app.boneMatBump
+        app.orca.getObjectByName(boneName.split(' ').join('_')).material = newlambert
+       // app.orca.getObjectByName(boneName.split(' ').join('_')).material.color = newlambert.color
+      }
+      app.activeMarker = intersectSprite
+      tweenMarker(1, 1, 1, intersectSprite, document.body)
+      console.log(intersects[0].object, app.orca, 'orca');  // <======== CHANGED
+      var info = document.getElementById('boneName')
+      Velocity(info, { translateY: [-10, 0], opacity: 0 }, {
+        duration: 300, easing: 'easeOutBack',
+        complete: function (elements) {
+          console.log(info, elements, 'toooo'); info.innerHTML = intersects[0].object.name.replace('_', " ");
+
+        }
+      })
+      Velocity(info, { translateY: [10, 0] }, { duration: 0 })
+      Velocity(info, { translateY: [0, 10], opacity: 1 }, {
+        duration: 300, easing: 'easeOutBack',
+      })
+      //document.getElementById('info').innerHTML = intersects[0].object.name;
+    }
   }
 }
 
