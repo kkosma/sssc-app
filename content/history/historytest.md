@@ -1,6 +1,6 @@
 ---
 layout: horizontal
-title: historytest
+title: historytest2
 year: '2008'
 images:
   - imagesize: col-4
