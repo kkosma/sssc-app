@@ -1,0 +1,19 @@
+---
+layout: vertical-1-2
+title: historytest
+year: '2002'
+images:
+  - imagesize: col-6
+    thumbnail: /images/uploads/Lauren_dive.jpg
+  - imagesize: col-6
+    thumbnail: /images/uploads/Mechanical_drawing_class.jpg
+---
+Thank you for inviting us to be part of Jane's graduation celebration. We're eager to see you all again. This event will make seeing you even more special.
+
+
+
+We'll be arriving Thursday at 7:00 p.m. on flight 401. Thank you for offering to pick us up and getting us a room at the Doe Inn. You seem to think of everything.
+
+
+
+We look forward to spending this time with you and getting better acquainted with Jane and her husband.
