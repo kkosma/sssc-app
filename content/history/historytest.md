@@ -1,5 +1,5 @@
 ---
-layout: vertical-2-1
+layout: vertical-1-2
 title: historyteste
 year: '2003'
 images:
