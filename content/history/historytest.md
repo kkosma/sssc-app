@@ -1,7 +1,7 @@
 ---
-layout: vertical-1-2
-title: historytest
-year: '2002'
+layout: vertical-2-1
+title: historyteste
+year: '2003'
 images:
   - imagesize: col-6
     thumbnail: /images/uploads/Lauren_dive.jpg
