@@ -74,7 +74,7 @@
       margin-top:.5rem;
       text-align:center
     }
-    .restartBtn{
+    #restartBtn{
       display:flex;
       align-self:center;
       font-family:Sofia;
@@ -85,14 +85,7 @@
       margin-top:.5rem;
       text-align:center;
       background:#1b9dff;
-      padding:10px 14px;
-      opacity:0;
-      pointer-events:none;
-      transition:opacity .4s ease;
-    }
-    .show{
-      opacity:1;
-      pointer-events:initial
+      padding:40px;
     }
   </style>
 </head>
@@ -105,7 +98,7 @@
  
  <h2 id="progressText"></h2>
  <h2 id="eta"></h2>
- <div class="restartBtn">Restart to update</div>
+
   <script>
   const { ipcRenderer } = require('electron');
   const remote = require('electron').remote;
@@ -113,8 +106,7 @@
   ///var home = document.getElementById('home')
   var statusText= document.getElementById('statusText')
   var eta= document.getElementById('eta')
-  var restartBtn= document.getElementsByClassName('restartBtn')[0]
- 
+
   let version = window.location.hash.substring(1);
   statusText.innerText = 'Launching SSSC App '+version;
   
@@ -140,21 +132,16 @@
     console.log(data, 'data'); // prints 'do something for me'
     statusText.innerHTML = "Rebuilding App..."
   });
-  ipcRenderer.on('permitRestart', (event, data) => {
+  ipcRenderer.on('restarting', (event, data) => {
       console.log(data, 'data'); // prints 'do something for me'
-      //statusText.innerHTML = "Restarting App..."
-    function restartApp() {
+      statusText.innerHTML = "Restarting App..."
+      setTimeout(() => {
+        remote.app.exit(0);
+      }, 1000);
       remote.app.relaunch();
-      remote.app.exit(0);
-    }
-    restartBtn.classList.add('fade')
-    restartBtn.addEventListener("click", restartApp);
-    //remote.app.relaunch();
-    //remote.app.exit(0);
   });
   ipcRenderer.on('reloadNuxt', (event, data) => {
       console.log(data, 'data'); // prints 'do something for me'
-      
       progressText.innerHTML = "Reload Main app"+data
      // home.innerHTML='home'
      // home.href=data

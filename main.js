@@ -36,6 +36,7 @@ const path = require('path')
 const Downloader = require('mt-files-downloader');
 const log = require('electron-log');
 const { autoUpdater } = require("electron-updater");
+const isOnline = require('is-online');
 var url = require("url")
 var curDls = 0; // Number of current download in progress
 const simultaneousDownload = 5; // As indicated by his name :)
@@ -54,6 +55,17 @@ autoUpdater.logger = log;
 autoUpdater.logger.transports.file.level = 'info';
 log.info('App starting...');
 
+// Check if online
+function onlineCheck(){
+	isOnline().then(online => {
+		if (online){
+			return true
+		}else{
+			return false
+		}
+		//=> true
+	});
+}
 
 // Get a path to prepend to any nodejs calls that are getting at files in the package,
 // so that it works both from source and in an asar-packaged mac app.
@@ -138,7 +150,7 @@ function cleanUpFiles(remoteFiles) {
 		process.exit(1)
 	})
 	nuxt.hook('build:done', builder => {
-	win.webContents.send('permitRestart', null);
+	win.webContents.send('restarting', null);
 		/*
 		app.relaunch()
 		setTimeout(function () {
@@ -211,39 +223,48 @@ var getGitUrls = function () {
 	})
 	win.loadURL(url)
 	win.webContents.send('loading', 'Checking for content updates');
-	let body = ''
-	let found
-	function getContent(value) {
-		//value.path.includes('content') ||
-		return (value.path.includes('content') || value.path.includes('images/uploads')) && value.type == 'blob'
-	}
-	var request = net.request(
-		{
-			url: 'https://api.github.com/repos/kkosma/sssc-app/git/trees/master?recursive=1',
-			auth: 'kkosma'
-		})
-	request.on('response', (response) => {
-		console.log(`STATUS: ${response.statusCode}`);
-		//console.log(response,'response')
-		response.on('error', (error) => {
-			console.log(`ERROR: ${JSON.stringify(error)}`)
-		})
-		response.on('data', (chunk) => {
-			//console.log(`${chunk}`)
-			body += chunk.toString()
-		})
-		response.on('end', () => {
-			console.log('No more data in response.')
-			body = JSON.parse(body)
-			//	console.log('body',body.tree)
-			found = body.tree.filter(getContent);
-			downloadFiles(found)
-			//console.log('found',found)
+	isOnline().then(online => {
+		if (online){
+			let body = ''
+			let found
+			function getContent(value) {
+				//value.path.includes('content') ||
+				return (value.path.includes('content') || value.path.includes('images/uploads')) && value.type == 'blob'
+			}
+			var request = net.request(
+				{
+					url: 'https://api.github.com/repos/kkosma/sssc-app/git/trees/master?recursive=1',
+					auth: 'kkosma'
+				})
+			request.on('response', (response) => {
+				console.log(`STATUS: ${response.statusCode}`);
+				//console.log(response,'response')
+				response.on('error', (error) => {
+					console.log(`ERROR: ${JSON.stringify(error)}`)
+				})
+				response.on('data', (chunk) => {
+					//console.log(`${chunk}`)
+					body += chunk.toString()
+				})
+				response.on('end', () => {
+					console.log('No more data in response.')
+					body = JSON.parse(body)
+					//	console.log('body',body.tree)
+					found = body.tree.filter(getContent);
+					downloadFiles(found)
+					//console.log('found',found)
 
 
-		})
+				})
+			})
+			request.end()
+		}else{
+			setTimeout(() => {
+				win.loadURL(_NUXT_URL_)
+			}, 1000);
+			win.webContents.send('message', 'No internet connection, starting app');
+		}
 	})
-	request.end()
 
 }
 
@@ -277,31 +298,16 @@ const template = [
 		submenu: [
 			{ role: 'reload' },
 			{ role: 'forcereload' },
-			{ role: 'toggledevtools' },
-			{ type: 'separator' },
-			{ role: 'resetzoom' },
-			{ role: 'zoomin' },
-			{ role: 'zoomout' },
-			{ type: 'separator' },
 			{ role: 'togglefullscreen' }
 		]
 	},
 	{
 		role: 'window',
 		submenu: [
-			{ role: 'togglefullscreen' },
 			{ role: 'close' }
 		]
-	},
-	{
-		role: 'help',
-		submenu: [
-			{
-				label: 'Learn More',
-				click() { require('electron').shell.openExternal('https://electron.atom.io') }
-			}
-		]
 	}
+	
 ]
 var kioskMode
 let autoUpdateURL = `file://${__dirname}/version.html#v${app.getVersion()}`
@@ -374,6 +380,8 @@ app.commandLine.appendSwitch('--enable-threaded-compositing')
 
 //console.log(app.getGPUFeatureStatus(),'gpustat')
 
+
+
 autoUpdater.on('checking-for-update', () => {
 	sendStatusToWindow('Checking for update...');
 })
@@ -407,7 +415,16 @@ app.on('ready', newWin)
 app.on('ready', function () {
 	sendStatusToWindow('Checking for updates...');
 	if (!config.dev) {
-		autoUpdater.checkForUpdates()
+		isOnline().then(online => {
+			if (online){
+				autoUpdater.checkForUpdates()
+			}else{
+				sendStatusToWindow('No active internet connection, starting app...');
+				setTimeout(function () {
+					win.loadURL(_NUXT_URL_)  
+				}, 1000)
+			}
+		})
 	}
 });
 app.on('window-all-closed', () => app.quit())

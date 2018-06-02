@@ -226,7 +226,7 @@ export default {
           rbtnEvent:"resetBones"
         },
         stepFinish: {
-          text: "Congragulations! <br> You've assembled the bones and Kruzof swims again.",
+          text: "Congratulations! <br> You've assembled the bones and Kruzof swims again!",
           nextlink: "1",
           step: "resetBones",
           lbtntext: "Restart",
