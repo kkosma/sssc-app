@@ -8,3 +8,5 @@ lifespan: test
 category: mammals
 ---
 test
+
+![](/images/uploads/Allen Hall.jpg)
