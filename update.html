@@ -74,6 +74,26 @@
       margin-top:.5rem;
       text-align:center
     }
+    .restartBtn{
+      display:flex;
+      align-self:center;
+      font-family:Sofia;
+      color:white;
+      z-index:2;
+      font-size:1rem;
+      margin:.9rem 0;
+      margin-top:.5rem;
+      text-align:center;
+      background:#1b9dff;
+      padding:10px 14px;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .4s ease;
+    }
+    .show{
+      opacity:1;
+      pointer-events:initial
+    }
   </style>
 </head>
 
@@ -85,14 +105,16 @@
  
  <h2 id="progressText"></h2>
  <h2 id="eta"></h2>
- <a href="" id="home"></a>
+ <div class="restartBtn">Restart to update</div>
   <script>
   const { ipcRenderer } = require('electron');
+  const remote = require('electron').remote;
   var progressText=document.getElementById('progressText')
-  var home = document.getElementById('home')
+  ///var home = document.getElementById('home')
   var statusText= document.getElementById('statusText')
   var eta= document.getElementById('eta')
-
+  var restartBtn= document.getElementsByClassName('restartBtn')[0]
+ 
   let version = window.location.hash.substring(1);
   statusText.innerText = 'Launching SSSC App '+version;
   
@@ -118,15 +140,24 @@
     console.log(data, 'data'); // prints 'do something for me'
     statusText.innerHTML = "Rebuilding App..."
   });
-  ipcRenderer.on('restarting', (event, data) => {
+  ipcRenderer.on('permitRestart', (event, data) => {
       console.log(data, 'data'); // prints 'do something for me'
-      statusText.innerHTML = "Restarting App..."
+      //statusText.innerHTML = "Restarting App..."
+    function restartApp() {
+      remote.app.relaunch();
+      remote.app.exit(0);
+    }
+    restartBtn.classList.add('fade')
+    restartBtn.addEventListener("click", restartApp);
+    //remote.app.relaunch();
+    //remote.app.exit(0);
   });
   ipcRenderer.on('reloadNuxt', (event, data) => {
       console.log(data, 'data'); // prints 'do something for me'
+      
       progressText.innerHTML = "Reload Main app"+data
-      home.innerHTML='home'
-      home.href=data
+     // home.innerHTML='home'
+     // home.href=data
 
     });
   ipcRenderer.on('launching', (event, data) => {

@@ -138,11 +138,12 @@ function cleanUpFiles(remoteFiles) {
 		process.exit(1)
 	})
 	nuxt.hook('build:done', builder => {
-		win.webContents.send('restarting', null);
+	win.webContents.send('permitRestart', null);
+		/*
 		app.relaunch()
 		setTimeout(function () {
 			app.exit(0)
-		}, 1000)
+		}, 1000)*/
 		//reloadHome()
 	})
 
@@ -288,7 +289,7 @@ const template = [
 	{
 		role: 'window',
 		submenu: [
-			{ role: 'minimize' },
+			{ role: 'togglefullscreen' },
 			{ role: 'close' }
 		]
 	},
@@ -357,7 +358,7 @@ const newWin = () => {
 		// Wait for nuxt to build
 		const pollServer = () => {
 			http.get(_NUXT_URL_, (res) => {
-				if (res.statusCode === 200) {  win.loadURL(_NUXT_URL_) } else { setTimeout(pollServer, 300) }
+				if (res.statusCode === 200) { win.loadURL(_NUXT_URL_)  } else { setTimeout(pollServer, 300) }
 			}).on('error', pollServer)
 		}
 		pollServer()
