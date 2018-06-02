@@ -1,6 +1,6 @@
 {
   "name": "sssc-app",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "description": "Sitka Sound Science Center Aquarium App",
   "author": "Kyle Kosma",
   "repository": "github:kkosma/sssc-app",
@@ -29,7 +29,8 @@
     "win": {
       "certificateFile": "kosma.pfx",
       "target": "nsis-web",
-      "icon":"build/icon.ico"
+      "icon":"build/icon.ico",
+      "verifyUpdateCodeSignature": false
     },
     "nsisWeb": {
       "perMachine": true,

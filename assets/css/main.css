@@ -236,6 +236,10 @@ p{
 .right .info-row:not(:last-child){
   margin-bottom:10px;
 }
+.right img{
+  width:100%;
+  margin-bottom:20px;
+}
 .animals-back-img{
   content:'';
   width:100%;
