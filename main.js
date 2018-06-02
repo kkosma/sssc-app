@@ -259,7 +259,7 @@ const template = [
 				}
 			},
 			{
-				label: 'Check for content update',
+				label: 'Download content updates',
 				click() {
 					getGitUrls()
 				},
@@ -380,8 +380,11 @@ autoUpdater.on('update-available', (info) => {
 	sendStatusToWindow('Update available.');
 })
 autoUpdater.on('update-not-available', (info) => {
-	sendStatusToWindow('Update not available.');
-	win.loadURL(_NUXT_URL_) 
+	sendStatusToWindow('Update not available > Starting');
+	setTimeout(function () {
+		win.loadURL(_NUXT_URL_)   
+	}, 1000)
+	
 })
 autoUpdater.on('error', (err) => {
 	sendStatusToWindow('Error in auto-updater. ' + err);
@@ -395,7 +398,7 @@ autoUpdater.on('download-progress', (progressObj) => {
 autoUpdater.on('update-downloaded', (info) => {
 	sendStatusToWindow('Update downloaded > Restarting to install.');
 	setTimeout(function () {
-		autoUpdater.quitAndInstall();  
+		autoUpdater.quitAndInstall(false);  
 	}, 1000)
 	
 });
@@ -403,7 +406,7 @@ app.on('ready', newWin)
 app.on('ready', function () {
 	sendStatusToWindow('Checking for updates...');
 	if (!config.dev) {
-		autoUpdater.checkForUpdatesAndNotify()
+		autoUpdater.checkForUpdates()
 	}
 });
 app.on('window-all-closed', () => app.quit())

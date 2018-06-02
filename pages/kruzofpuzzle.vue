@@ -421,7 +421,7 @@ export default {
          app.state.view='bones'
         
       }
-      
+      this.toggleBoneMarkerBtn('on')
 
       if(app.state.endGame == true){
         
