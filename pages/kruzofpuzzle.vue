@@ -1915,6 +1915,7 @@ ul.right-nav {
   flex-direction: column;
   flex-wrap: wrap;
   transform: translateY(400px);
+  will-change:transform;
 
   font-size: 0;
 }

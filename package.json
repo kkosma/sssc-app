@@ -33,8 +33,9 @@
     },
     "nsisWeb": {
       "perMachine": true,
-      "oneClick": false,
+      "oneClick": true,
       "differentialPackage": true,
+      "allowElevation": true,
       "publish": [
         {
           "provider": "github",
@@ -52,7 +53,7 @@
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "npm run lint",
     "e-dev": "cross-env NODE_ENV=DEV electron .",
-    "e-build": "BUILD_ENV=electron nuxt build && electron-builder -w --publish never",
+    "e-build": "cross-env BUILD_ENV=electron nuxt build && electron-builder -w --publish never",
     "release": "BUILD_ENV=electron nuxt build && electron-builder -w"
   },
   "dependencies": {

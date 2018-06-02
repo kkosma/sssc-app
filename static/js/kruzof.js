@@ -1335,7 +1335,7 @@ var OBJLoader2Example = (function () {
 
         Velocity(
           // Just some dom element to emulate tween
-          document.getElementsByClassName('loader')[0],
+          document.body,
           {
             tween: [1, 0]
           },
