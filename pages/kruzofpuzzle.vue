@@ -92,22 +92,7 @@ let current;
 if (process.browser) {
  // app.popper = this.popper
   var currentPage = this.current;
-  console.log(this.current, "current");
-  Velocity.RegisterEffect("trans.slideUpIn", {
-    defaultDuration: 800,
-    easing: "easeOutBack",
-    calls: [[{ opacity: [1, 0], translateY: [0, 50] }]]
-  });
-  var DEBUG = true;
-  this.environment == 'production' ? DEBUG = false : null
-  this.buildEnv == 'electron' ? DEBUG = false : null
-  if (!DEBUG) {
-    if (!window.console) window.console = {};
-    var methods = ["log", "debug", "warn", "info"];
-    for (var i = 0; i < methods.length; i++) {
-      console[methods[i]] = function() {};
-    }
-  }
+ 
 
   //require ('js/kruzof.js')
 }
@@ -253,7 +238,22 @@ export default {
     };
   },
   mounted() {
-    
+     console.log(this.current, "current");
+    Velocity.RegisterEffect("trans.slideUpIn", {
+      defaultDuration: 800,
+      easing: "easeOutBack",
+      calls: [[{ opacity: [1, 0], translateY: [0, 50] }]]
+    });
+    var DEBUG = true;
+    this.environment == 'production' ? DEBUG = false : null
+    this.buildEnv == 'electron' ? DEBUG = false : null
+    if (!DEBUG) {
+      if (!window.console) window.console = {};
+      var methods = ["log", "debug", "warn", "info"];
+      for (var i = 0; i < methods.length; i++) {
+        console[methods[i]] = function() {};
+      }
+    }
     // const step1=document.getElementById('step1')
     /*
     tippy('selector', {
