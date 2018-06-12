@@ -99,6 +99,8 @@ if (process.browser) {
     calls: [[{ opacity: [1, 0], translateY: [0, 50] }]]
   });
   var DEBUG = true;
+  this.environment == 'production' ? DEBUG = false : null
+  this.buildEnv == 'electron' ? DEBUG = false : null
   if (!DEBUG) {
     if (!window.console) window.console = {};
     var methods = ["log", "debug", "warn", "info"];
@@ -136,6 +138,8 @@ export default {
       Radius: {}
     };
     return {
+      environment:context.env.environment,
+      buildEnv:context.env.buildEnv,
       animals: context.env.animals,
       catImages: {
         Fish: "/images/fish2-back.jpg",
@@ -217,7 +221,7 @@ export default {
           rbtnEvent:"tutorialNext"
         },
         stepresetBones: {
-          text: "Are you sure you want to remove the assembled bones start over?",
+          text: "Are you sure you want to <br>remove the assembled bones and start over?",
           nextlink: "1",
           step: "resetBones",
           lbtntext: "No Thanks",
@@ -1500,7 +1504,7 @@ export default {
   display: flex;
   flex-direction: column;
 }
-/*
+
 .tutorial-popup:after {
   content: "";
   position: absolute;
@@ -1510,7 +1514,7 @@ export default {
   border-width: 15px;
   border-style: solid;
   border-color: white transparent transparent transparent;
-}*/
+}
 .right-tip:after {
   content: "";
   position: absolute;
