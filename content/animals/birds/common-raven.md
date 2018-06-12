@@ -4,12 +4,12 @@ attribution: Accipiter, some rights reserved (CC BY-SA)
 title: "Common Raven"
 scientific: "Corvus corax"
 lifespan: "13 years"
-size: "Body size – 34-43 inches, wingspan – 6-8 feet, weight – 6.5-14 pounds"
-distribution: "Throughout North America, except in the interior of the lower 48"
+size: "Body size – 26 inches, wingspan – 3.8-4.7 feet, weight – 2.3 pounds"
+distribution: "Across the northern hemisphere"
 ---
 
-The bald eagle, the national symbol of the United States, is one of the most easily identifiable birds in Alaska. They are a large bird, with dark brown feathers, a white head and tail, and yellow beak and feet. Juveniles are mottled brown and white. They are a raptor, meaning they are a predatory hunter, but they are also opportunistic scavengers, feeding in carrion and dead fish. They feed primarily on fish, but will feed on other birds or small mammals when fish are scarce. They are known to steal food from Osprey by waiting for one to return to its nest with food and harassing it until it drops it.
+The common raven is the largest of the “perching birds” or “songbirds”, often being the same size as hawks. They are solid black in color, with a thick neck and shaggy throat feathers, a large, stout bill and wedge-shaped tail feathers. They have a large range of vocalizations, from chirps to cries to cat-like meows. They are omnivorous, and notorious scavengers, often getting into trash cans and being found around dumps. They will hide food supplies, and are known to raid others bird’s food supplies. Like owls and hawks, ravens will regurgitate what they can’t digest in pellets, which gives researchers insight into what the animals are eating.
 
-It is believed bald eagles mate for life. They reach sexual maturity at about 5 years old, with females laying typically two eggs per season. The eggs are guarded by both parents, who will take turns hunting, for 34-36 days. The young will stay in the nest for 10-12 weeks before fledging.
 
-Bald eagles are a wildlife conservation success story. For years, they were hunted for sport and to protect fishing grounds. Those activities, together with the use of the pesticide DDT, almost wiped out bald eagle populations. DDT and other pesticides collect in the tissues of fish, which are then ingested by eagles and cause reproductive problems. Restricting the use DDT in 1972, and protecting bald eagles under the Endangered Species Act, has led to a rebound of populations. They have recovered so well that they were removed from the endangered species list in 2007, and are now designated as “least concern”.
+Ravens will mate for life, and reach sexual maturity at about 3-4 years old. The female lays a clutch of 3-7 eggs, and is the sole incubator of the eggs, with the male bringing her food while in the nest. Chicks hatch after about 3 weeks, and fledge about 4 weeks after that, even though the young will remain with the parents after fledging.
+Historically, ravens have been found throughout the entire United States, but disappeared completely from the east and Midwest before 1900, and have only recently been seen expanding back into these territories. Ravens have long been honored in Native American cultures, most often being known as a trickster. The most common is the story of The Raven and the Sun, which tells of how the raven stole the light of the universe from a man (or eagle, depending in the culture) who had hidden it for his own pleasure, and released it for all to enjoy, creating the sun, moon, and stars.
