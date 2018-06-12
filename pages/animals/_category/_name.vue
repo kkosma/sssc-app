@@ -40,7 +40,7 @@
             </div>
             <div class="info-item-text">
 
-              <div class="info-text">Up to 9cm (3.8 inches)</div>
+              <div class="info-text">{{animal.size}}</div>
             </div>
           </div>
           
