@@ -3,8 +3,8 @@ image: /images/uploads/king-salmon.jpg
 title: Chinook (King) Salmon
 scientific: Oncorhynchus tshawytshca
 distribution: Japan to Alaska to central California
-size: Average 91.4cm (36 inches), over 30 pounds
-lifespan: 5-7 yearss
+size: 'Average 91.4cm (36 inches), over 30 pounds'
+lifespan: 5-7 years
 category: salmon
 ---
 
