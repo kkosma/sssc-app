@@ -1,10 +1,10 @@
 ---
 image: /images/uploads/chum-salmon.jpg
-attribution: Chris, some rights reserved (CC BY-NC)
-title: Chum (Dog) Salmo
+attribution: 'Chris, some rights reserved (CC BY-NC)'
+title: Chum (Dog) Salmon
 scientific: Oncoryhnchus keta
 distribution: Japan to Alaska to northern California
-size: 24-28 inches, 10-13 pounds
+size: '24-28 inches, 10-13 pounds'
 lifespan: 4-5 years
 category: salmon
 ---
