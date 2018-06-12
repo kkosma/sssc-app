@@ -203,7 +203,6 @@ collections:
     extension: 'md'
     editor:
       preview: false
-    filter: {field: "category", value: "birds"}
     fields: # The fields for each document, usually in front matter
       - {label: "Image", name: "image", widget: "image", required: true}
       - {label: "Attribution", name: "attribution", widget: "string", required: false}
@@ -223,7 +222,6 @@ collections:
     extension: 'md'
     editor:
       preview: false
-    filter: {field: "category", value: "invertebrates"}
     fields: # The fields for each document, usually in front matter
       - {label: "Image", name: "image", widget: "image", required: true}
       - {label: "Attribution", name: "attribution", widget: "string", required: false}
