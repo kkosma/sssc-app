@@ -464,6 +464,7 @@ var OBJLoader2Example = (function () {
     this.end.transform.y=.75
     this.end.transform.zSkin = 1
     this.end.transform.zBones = .65
+    this.timers={}
 
     this.renderer = new THREE.WebGLRenderer({
       canvas: this.canvas,
@@ -472,6 +473,13 @@ var OBJLoader2Example = (function () {
       sortObjects: true,
       alpha: true
     });
+    if (!window.kruzof){
+      
+    }
+    window.kruzof ? {} : window.kruzof={}
+    window.kruzof.renderer=this.renderer
+    //window.$nuxt.$store.webGlRenderer = this.renderer
+    console.log(window.kruzof, "WINDOW")
     //this.renderer.setClearColor( 0xb7b7b7);
 
     this.scene = new THREE.Scene();
@@ -514,6 +522,7 @@ var OBJLoader2Example = (function () {
     currentPage === 'kruzof' ? this.camera.position.set(-10, 5, 10) : this.camera.position.position = new THREE.Vector3(18, 3, -300) //this.camera.rotation.x = 90 * Math.PI / 180
     this.camera.fov = 45
     //this.camera.layers.enable(2);
+    this.controls=null;
     this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
     this.controls.update();
     
@@ -548,9 +557,9 @@ var OBJLoader2Example = (function () {
     var sky = new THREE.Mesh(skyGeo, skyMat);
     //sky.position.y=-1600
     this.scene.add(sky);
-    renderer = new THREE.WebGLRenderer();
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    //renderer = new THREE.WebGLRenderer();
+    //renderer.setPixelRatio(window.devicePixelRatio);
+    //renderer.setSize(window.innerWidth, window.innerHeight);
     //container.appendChild(renderer.domElement);
     //var ambientLight = new THREE.AmbientLight( 0xFFB475 );
     var ambientLight = new THREE.AmbientLight(0xFFffff);
@@ -915,51 +924,54 @@ var OBJLoader2Example = (function () {
     var puzzleEnter=function(){
       var timeOut=1300
       //var timeOut=20
-      setTimeout(() => {
-        
-        var loader=document.getElementsByClassName('loader')[0]
-        Velocity(
-          loader,
-          { opacity: 0 },
-          {
-            easing: [0.6, -0.58, 0.735, 0.045],
-            duration: 350,
-            complete: function (elements) {
-              tweenOpacity(scope.orca, .15, document.body)
-              loader.style.visibility = 'hidden'
+      console.log(app.timers, 'TIMERS')
+      if (Object.keys(app.timers).length =! 0 && app.timers.constructor== Object){
+        app.timers.puzzleEnter=setTimeout(() => {
+          
+          var loader=document.getElementsByClassName('loader')[0]
+          Velocity(
+            loader,
+            { opacity: 0 },
+            {
+              easing: [0.6, -0.58, 0.735, 0.045],
+              duration: 350,
+              complete: function (elements) {
+                tweenOpacity(scope.orca, .15, document.body)
+                loader.style.visibility = 'hidden'
 
 
+              }
             }
-          }
-        );
-        //moveCamera(new THREE.Euler(18, 3, 1, 'XYZ'), 120)
-        var targetPosition = new THREE.Vector3(18, 3, 1);
-        //var targetPosition = new THREE.Vector3(26, 0, 8);
-        var duration = 40;
-        //var bonemapDelay=3000
-        var bonemapDelay = 3200
+          );
+          //moveCamera(new THREE.Euler(18, 3, 1, 'XYZ'), 120)
+          var targetPosition = new THREE.Vector3(18, 3, 1);
+          //var targetPosition = new THREE.Vector3(26, 0, 8);
+          var duration = 40;
+          //var bonemapDelay=3000
+          var bonemapDelay = 3200
 
-        tweenCamera(targetPosition, 4000);
-        Velocity(document.getElementById('bonemap'), { translateY: '400px' }, {
-          duration: 0, easing: [.31, 0, .55, 1.16], complete: function (elements) { }
-        })
-        Velocity(document.getElementById('bonemap'), { translateY: '0px' }, {
-          delay: bonemapDelay, duration: 600, easing: "easeOutQuad", complete: function (elements) {
-            var step1 = document.getElementById("step1")
-            setTimeout(() => {
-            //step1._tippy.show()
-            document.getElementById("step0").style.visibility = 'visible'
-            app.controls.enabled = true;
-            Velocity(document.getElementById("step0"), { opacity: 1, scale: [1, .9] }, { easing: [0.175, 0.885, 0.32, 1.575], duration: 350 });
-            },300)
-          }
-        })
-        
-      }, timeOut);
+          tweenCamera(targetPosition, 4000);
+          Velocity(document.getElementById('bonemap'), { translateY: '400px' }, {
+            duration: 0, easing: [.31, 0, .55, 1.16], complete: function (elements) { }
+          })
+          Velocity(document.getElementById('bonemap'), { translateY: '0px' }, {
+            delay: bonemapDelay, duration: 600, easing: "easeOutQuad", complete: function (elements) {
+              var step1 = document.getElementById("step1")
+              app.timers.puzzleTutorial=setTimeout(() => {
+              //step1._tippy.show()
+              document.getElementById("step0").style.visibility = 'visible'
+              app.controls.enabled = true;
+              Velocity(document.getElementById("step0"), { opacity: 1, scale: [1, .9] }, { easing: [0.175, 0.885, 0.32, 1.575], duration: 350 });
+              },300)
+            }
+          })
+          
+        }, timeOut);
+      }
      
 
     }
-    var callbackOnLoad = function (event) {
+    app.callbackOnLoad = function (event) {
       var callbackProgress =function(){
         console.log('parseprograss')
       }
@@ -1005,7 +1017,7 @@ var OBJLoader2Example = (function () {
     objLoader.setUseIndices(true);
     objLoader.setDisregardNormals(false);
     //objLoader.getLogger().setDebug(true);
-    objLoader.load('images/kruzof/kruzof-best-1-unwrapb.obj', callbackOnLoad, loadProgress, null, null, true);
+    objLoader.load('images/kruzof/kruzof-best-1-unwrapb.obj', app.callbackOnLoad, loadProgress, null, null, true);
 
     //objLoader.load('obj/woolly_mammoth/orca_skull.obj', callbackOnLoadBones, null, null, null, false);
     //objLoader.load('obj/woolly_mammoth/orca_spine.obj', callbackOnLoadBones, null, null, null, false);
@@ -1122,8 +1134,8 @@ var OBJLoader2Example = (function () {
           console.log('skin added', scope.skinGroup)
           
           setTimeout(() => {
-            var sectionHelper = new THREE.SectionHelper(scope.skinGroup.children[0], "#000");
-          sectionHelper.material.clippingPlanes = [scope.skinClip]
+            //var sectionHelper = new THREE.SectionHelper(scope.skinGroup.children[0], "#000");
+          //sectionHelper.material.clippingPlanes = [scope.skinClip]
           //sectionHelper.position.set(3.25, 3.2, -8.25)
          // scope.scene.add(sectionHelper);
           },2000)
@@ -1660,7 +1672,7 @@ var render = function () {
   for (var i = 0; i < app.mixers.length; ++i)
     app.mixers[i].update(delta);
   }
-  requestAnimationFrame(render);
+  app.renderRequest=requestAnimationFrame(render);
   app.render();
 };
 var activeMarker,activeBoneHighlight
