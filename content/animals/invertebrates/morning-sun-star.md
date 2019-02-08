@@ -1,8 +1,8 @@
 ---
-image: /images/uploads/sunflower_star.jpg
+image: /images/uploads/sun-star.jpg
 title: Morning Sun Star
 scientific: Solaster dawsoni
-distribution: Japan to Alaska to California, intertidal to 420m
+distribution: 'Japan to Alaska to California, intertidal to 420m'
 size: Up to 40 cm (16 inches)
 lifespan: Unknown
 category: invertebrates
